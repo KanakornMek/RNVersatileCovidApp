@@ -81,7 +81,7 @@ class Home extends Component {
                             <Text style={styles.newcaseheader}>ยอดผู้ป่วยรายใหม่</Text>
                         </View>
                         <View style={styles.case0below}>
-                            {this.state.todaycase.map(todaycase => <Text style={styles.case0}> {todaycase.new_case}</Text>)}
+                            {this.state.todaycase.map((todaycase,index) => <Text key={index} style={styles.case0}> {todaycase.new_case}</Text>)}
                             <Text style={styles.raystat0}> ราย</Text>
                         </View>
                     </View>
@@ -94,7 +94,7 @@ class Home extends Component {
                         </View>
                         <View style={styles.case1below}>
                             <Text style={styles.case1header}>ติดเชิ้อสะสม</Text>
-                            {this.state.todaycase.map(todaycase => <Text style={styles.case1}> {todaycase.total_case}</Text>)}
+                            {this.state.todaycase.map((todaycase,index) => <Text key={index} style={styles.case1}> {todaycase.total_case}</Text>)}
                             <Text style={styles.raystat1}> ราย</Text>
                         </View>
                     </View>
@@ -104,7 +104,7 @@ class Home extends Component {
                     </View>
                         <View style={styles.case2below}>
                             <Text style={styles.case2header}>รักษาหายแล้ว</Text>
-                            {this.state.todaycase.map(todaycase => <Text style={styles.case2}> {todaycase.total_recovered}</Text>)}
+                            {this.state.todaycase.map((todaycase,index) => <Text key={index} style={styles.case2}> {todaycase.total_recovered}</Text>)}
                             <Text style={styles.raystat1}> ราย</Text>
                         </View>
                     </View>
@@ -114,7 +114,7 @@ class Home extends Component {
                     </View>
                         <View style={styles.case3below}>
                             <Text style={styles.case3header}>รักษาหายแล้ว</Text>
-                            {this.state.todaycase.map(todaycase => <Text style={styles.case3}> {todaycase.total_recovered}</Text>)}
+                            {this.state.todaycase.map((todaycase,index) => <Text key={index} style={styles.case3}> {todaycase.total_recovered}</Text>)}
                             <Text style={styles.raystat3}> ราย</Text>
                         </View>
                     </View>
