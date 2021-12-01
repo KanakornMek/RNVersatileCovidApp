@@ -4,7 +4,18 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function Chatbot () {
     return(
         <View>
-            <Text>Chatbot</Text>
+            <Text style={styles.testText} >Chatbot</Text>
+            <Text style={{fontSize: 40, color: 'black'}} >Chatbot</Text>
+            <Text style={{fontSize: 40, color: 'black', fontFamily: 'Prompt'}}>ภาษาไทย</Text>
+            <Text style={{fontSize: 40}}>ภาษาไทย</Text>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    testText: {
+        fontSize: 40,
+        color: 'black',
+        fontFamily: 'Roboto',
+     }
+});
