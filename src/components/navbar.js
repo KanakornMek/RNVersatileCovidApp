@@ -51,7 +51,7 @@ export default function Navbar(){
             <Tab.Screen name='Home' component={Home}/>
             <Tab.Screen name='Reservation' component={Reservation} />
             <Tab.Screen name='Chatbot' component={Chatbot}/>
-            <Tab.Screen name='Account' component={Account} />
+            <Tab.Screen name='Account' options={{headerStyle: {height: 33, backgroundColor:'#15ABFF'}}} component={Account} />
         </Tab.Navigator>
     );
 }

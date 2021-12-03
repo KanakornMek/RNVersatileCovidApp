@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, Text, View, Button, Image } from 'react-native';
+import { Pressable, StyleSheet, Text, View, Button, Image, SafeAreaView } from 'react-native';
 import { Dimensions } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Entypo from 'react-native-vector-icons/Entypo'
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
         fontSize: windowWidth * 0.04,
     },
     wrapper: {
+        
         flexDirection: 'row',
         flex: 1,
         height: '100%',
