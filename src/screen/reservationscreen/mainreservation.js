@@ -17,7 +17,6 @@ export default function MainReserve({ navigation }) {
   const [appoints, setAppoint] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // var docRef = firebase.firestore().collection("bed_reserve").doc("test1");
   useEffect(() => {
     const subscriber = firestore()
       .collection('bed_reserve')
@@ -26,18 +25,8 @@ export default function MainReserve({ navigation }) {
         console.log('User data: ', documentSnapshot.data());
       });
 
-    // Stop listening for updates when no longer required
     return () => subscriber();
   }, []);
-  // docRef.get().then((doc) => {
-  //     if (doc.exists) {
-  //         setData(doc.data());
-  //         setAppoint(doc.data().doctor_appoint);
-  //     } else {
-  //     }
-  // }).catch((error) => {
-
-  // });
 
   return (
     <View style={styles.container}>
