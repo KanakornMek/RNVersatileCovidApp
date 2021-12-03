@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, View, Button, Image} from 'react-native';
 
+
 export default function Chatbot() {
   return (
     <View style={styles.container}>
@@ -73,3 +74,4 @@ const styles = StyleSheet.create({
     color: 'black',
   },
 });
+

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Pressable,
   StyleSheet,
@@ -10,23 +10,23 @@ import {
   Button,
 } from "react-native";
 import Dropdown from "./components/Dropdown.js";
+import firestore from '@react-native-firebase/firestore';
 
 export default function MainReserve({ navigation }) {
   const [data, setData] = useState({});
   const [appoints, setAppoint] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // var docRef = firebase.firestore().collection("bed_reserve").doc("test1");
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('bed_reserve')
+      .doc('test1')
+      .onSnapshot(documentSnapshot => {
+        console.log('User data: ', documentSnapshot.data());
+      });
 
-  // docRef.get().then((doc) => {
-  //     if (doc.exists) {
-  //         setData(doc.data());
-  //         setAppoint(doc.data().doctor_appoint);
-  //     } else {
-  //     }
-  // }).catch((error) => {
-
-  // });
+    return () => subscriber();
+  }, []);
 
   return (
     <View style={styles.container}>
