@@ -19,8 +19,10 @@ export default function MainReserve({ navigation }) {
   
   useEffect(() => {
     const subscriber = firestore()
-      .collection('bed_reserve')
-      .doc('test1')
+      .collection('reserveBed')
+      .doc('UcPqW782Wp92QGZIEn8M')
+      .collection('patients')
+      .doc('ZzXpaMEdZRIGm1jjcLkF')
       .onSnapshot(documentSnapshot => {
         console.log('User data: ', documentSnapshot.data());
       });

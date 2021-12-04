@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "527850680105",
+    "project_id": "nsc-covidapp",
+    "storage_bucket": "nsc-covidapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527850680105:android:f988a55efbd65e28a61138",
+        "android_client_info": {
+          "package_name": "com.rnversatilecovidapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527850680105-c9qgub37k2tj073lka95ips3jtocausj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDg8JahDaFYFu8raEIgPkimbucf5oUxjjc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527850680105-c9qgub37k2tj073lka95ips3jtocausj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "527850680105-g2uuf7mt2kjtf5lpttje4ncnpje5bmrr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.RNVersatileCovidApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
