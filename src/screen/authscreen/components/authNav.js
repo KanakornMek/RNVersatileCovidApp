@@ -1,15 +1,15 @@
 import React from 'react'
-import { View } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { createStackNavigator } from "@react-navigation/stack";
 import LoginScreen from '../loginAuth';
-import SignUp from '../signUpAuth';
+import SignupNav from './signupNav';
 
 export default function AuthNav() {
     const Stack = createStackNavigator();
     return (
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="SignUp" component={SignUp} />
+            <Stack.Screen name="SignUpNav" component={SignupNav} />
         </Stack.Navigator>
     )
 }

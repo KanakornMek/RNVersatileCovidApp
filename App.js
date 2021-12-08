@@ -15,9 +15,11 @@ export default function App() {
       
         <NavigationContainer>
 
-          <AuthStack.Navigator>
-            <AuthStack.Screen name="Auth" component={AuthNav} />
-            <AuthStack.Screen name="Navbar" component={Navbar} />
+          <AuthStack.Navigator
+            initialRouteName={auth().currentUser ? 'Home' : 'Auth'}
+          >
+            <AuthStack.Screen name="Auth" component={AuthNav} options={{ headerShown: false }} />
+            <AuthStack.Screen name="Navbar" component={Navbar} options={{ headerShown: false }} />
           </AuthStack.Navigator>
 
         </NavigationContainer>

@@ -16,10 +16,10 @@ import Account from '../screen/accountscreen/account';
 
 const Tab = createBottomTabNavigator();
 
-export default function Navbar(){
+export default function Navbar({navigation}) {
     return (
         <>
-
+        {!auth().currentUser && navigation.navigate('Auth')}
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {

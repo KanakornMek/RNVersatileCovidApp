@@ -20,7 +20,7 @@ export default function LoginScreen({navigation}) {
 
   function handleLogin() {
     auth().signInWithEmailAndPassword(email, password).then(() => {
-      navigation.navigate('Home');
+      navigation.navigate('Navbar');
     });
   }
   return (
@@ -50,7 +50,7 @@ export default function LoginScreen({navigation}) {
         </View>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate('SignUp')}
+        onPress={() => navigation.navigate('SignUpNav')}
         style={{marginTop: 20}}>
         <Text style={{fontWeight: 'bold'}}>สมัครสมาชิก</Text>
       </TouchableOpacity>

@@ -6,10 +6,11 @@ import Entypo from 'react-native-vector-icons/Entypo'
 
 import auth from '@react-native-firebase/auth';
 
-export default function Account() {
+export default function Account({navigation}) {
 
     function handleLogout() {
         auth().signOut();
+        navigation.navigate('Auth');
     }
 
     return (
