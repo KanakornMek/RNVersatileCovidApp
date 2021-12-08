@@ -10,7 +10,10 @@ export default function Account({navigation}) {
 
     function handleLogout() {
         auth().signOut();
-        navigation.navigate('Auth');
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'Auth' }],
+        });
     }
 
     return (

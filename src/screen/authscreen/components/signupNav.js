@@ -9,7 +9,7 @@ export const SignUpsetInfo = React.createContext();
 
 const SignUpStack = createStackNavigator();
 
-export default function SignupNav() {
+export default function SignupNav({ navigation}) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -18,7 +18,7 @@ export default function SignupNav() {
     const [phoneNumber, setPhoneNumber] = useState('')
 
     const signUpInfoValue = {
-        email :email,
+        email:email,
         password:password,
         confirmPassword: confirmPassword,
         firstName: firstName,
