@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Modal, StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import auth from '@react-native-firebase/auth';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -17,6 +18,8 @@ const Tab = createBottomTabNavigator();
 
 export default function Navbar(){
     return (
+        <>
+
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
@@ -45,7 +48,7 @@ export default function Navbar(){
                     height: 33,
                 },
                 headerTitle: '',
-                lazy: false
+                lazy: true,
             })}
         >
             <Tab.Screen name='Home' component={Home}/>
@@ -53,5 +56,6 @@ export default function Navbar(){
             <Tab.Screen name='Chatbot' component={Chatbot}/>
             <Tab.Screen name='Account' options={{headerStyle: {height: 33, backgroundColor:'#15ABFF'}}} component={Account} />
         </Tab.Navigator>
+        </>
     );
 }

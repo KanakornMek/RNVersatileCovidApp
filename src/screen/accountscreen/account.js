@@ -4,7 +4,14 @@ import { Dimensions } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Entypo from 'react-native-vector-icons/Entypo'
 
+import auth from '@react-native-firebase/auth';
+
 export default function Account() {
+
+    function handleLogout() {
+        auth().signOut();
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.top_box}>
@@ -50,7 +57,7 @@ export default function Account() {
 
                     </Pressable>
                 </View>
-                <Pressable style={styles.button}>
+                <Pressable style={styles.button} onPress={handleLogout}>
                     <Text style={{ color: 'red', fontSize: 25 }} >ออกจากระบบ</Text>
                 </Pressable>
             </View>

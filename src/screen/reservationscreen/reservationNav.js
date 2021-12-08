@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
@@ -11,7 +11,7 @@ import MainReserve from './mainreservation';
 import ReserveOpt from './reserveoptions';
 import Room from './chooseRoom';
 import Form from './formreserve';
-
+import auth from '@react-native-firebase/auth';
 const Stack = createStackNavigator();
 
 export default function ReserveNav(){
@@ -123,3 +123,12 @@ export default function ReserveNav(){
         </Stack.Navigator>
     );
 }
+
+
+const styles = StyleSheet.create({
+
+  modal: {
+    flex: 1,
+    width: '100%',
+  }
+});
