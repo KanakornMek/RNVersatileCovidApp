@@ -47,19 +47,21 @@ export default function GetPersonInfo({navigation}) {
   }
   return (
     <View style={styles.container}>
-      <TextForm
-        title="ชื่อ"
-        setText={text => SetPersonInfo.setFirstName(text)}
-      />
-      <TextForm
-        title="สกุล"
-        setText={text => SetPersonInfo.setLastName(text)}
-      />
-      <TextForm
-        title="เบอร์โทรศัพท์"
-        setText={text => SetPersonInfo.setPhoneNumber(text)}
-      />
-      <Button title="press" onPress={handleSignUp} />
+      <View style={styles.form}>
+        <TextForm
+          title="ชื่อ"
+          setText={text => SetPersonInfo.setFirstName(text)}
+        />
+        <TextForm
+          title="สกุล"
+          setText={text => SetPersonInfo.setLastName(text)}
+        />
+        <TextForm
+          title="เบอร์โทรศัพท์"
+          setText={text => SetPersonInfo.setPhoneNumber(text)}
+        />
+        <Button title="press" onPress={handleSignUp} />
+      </View>
     </View>
   );
 }
@@ -76,9 +78,15 @@ function TextForm({setText, title}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
+    alignItems: 'center',
   },
   textForm: {
-    borderWidth: 1,
+    borderBottomWidth: 1,
     padding: 2,
+  },
+  form: {
+    flex: 1,
+    width: '85%',
   },
 });
