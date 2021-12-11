@@ -2,7 +2,7 @@ import React, {useState, useContext} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, Alert} from 'react-native';
 import TextBox from './components/textbox';
 import {SignUpInfo, SignUpsetInfo} from './components/signupNav';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import auth from '@react-native-firebase/auth';
 
 export default function SignUp({navigation}) {
@@ -38,7 +38,7 @@ export default function SignUp({navigation}) {
     }
   }
   return (
-    <View style={styles.container}>
+    <KeyboardAwareScrollView style={styles.container}>
       <Text style={styles.title}>ลงทะเบียน</Text>
       <TextBox
         icon="mail"
@@ -51,12 +51,14 @@ export default function SignUp({navigation}) {
         size={20}
         placeholder="รหัสผ่าน"
         setState={SetPersonInfo.setPassword}
+        password
       />
       <TextBox
         icon="lock"
         size={20}
         placeholder="ยืนยันรหัสผ่าน"
         setState={SetPersonInfo.setConfirmPassword}
+        password
       />
       <TouchableOpacity onPress={goPersonInfo}>
         <View style={styles.loginButton}>
@@ -65,7 +67,7 @@ export default function SignUp({navigation}) {
           </Text>
         </View>
       </TouchableOpacity>
-    </View>
+    </KeyboardAwareScrollView>
   );
 }
 

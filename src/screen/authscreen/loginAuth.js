@@ -13,6 +13,7 @@ import {
 
 import auth from '@react-native-firebase/auth';
 import TextBox from './components/textbox';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function LoginScreen({navigation}) {
   const [email, setEmail] = useState('');
@@ -24,7 +25,7 @@ export default function LoginScreen({navigation}) {
     });
   }
   return (
-    <KeyboardAvoidingView style={styles.container} keyboardVerticalOffset={10}>
+    <KeyboardAwareScrollView contentContainerStyle={{alignItems: 'center'}} style={styles.container} keyboardVerticalOffset={10}>
       <Image
         style={{width: 150, height: 150, marginVertical: 100}}
         source={{
@@ -54,14 +55,14 @@ export default function LoginScreen({navigation}) {
         style={{marginTop: 20}}>
         <Text style={{fontWeight: 'bold'}}>สมัครสมาชิก</Text>
       </TouchableOpacity>
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    alignItems: 'center',
+    
   },
   loginButton: {
     padding: 10,
