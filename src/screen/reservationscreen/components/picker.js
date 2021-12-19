@@ -12,9 +12,8 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-export default function PlatformPicker({ items, pickplacehold }) {
+export default function PlatformPicker({ items, pickplacehold, setSelected, selected, setIndex }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selected, setSelected] = useState(pickplacehold);
   return (
     <>
       {Platform.OS === "ios" && (
@@ -42,18 +41,20 @@ export default function PlatformPicker({ items, pickplacehold }) {
                     </View>
                     <Picker
                       style={{ width: "100%" }}
-                      onValueChange={(itemValue, itemIndex) =>
+                      onValueChange={(itemValue, itemIndex) => {
                         setSelected(itemValue)
+                        setIndex(itemIndex)
+                      }
                       }
                       selectedValue={selected}
                     >
                       <Picker.Item label={pickplacehold} value={pickplacehold} />
-                      {items.map((item, index) => {
+                      {items.default.map((item, index) => {
                         return (
                           <Picker.Item
                             key={index}
-                            label={item.label}
-                            value={item.value}
+                            label={item.name_th}
+                            value={item.name_th}
                           />
                         );
                       })}
@@ -63,7 +64,7 @@ export default function PlatformPicker({ items, pickplacehold }) {
               </View>
             </TouchableWithoutFeedback>
           </Modal>
-          <View style={{width: '100%', alignItems: 'center', marginTop: 10,}}>
+          <View style={{ width: '100%', alignItems: 'center', marginTop: 10, }}>
             <Pressable
               style={styles.pickerButton}
               onPress={() => setModalVisible(true)}
@@ -72,24 +73,26 @@ export default function PlatformPicker({ items, pickplacehold }) {
               <AntDesign name={'caretdown'} size={15} color={'#4b4b4b'} />
             </Pressable>
           </View>
-          </>
+        </>
       )}
       {Platform.OS !== "ios" && (
-          <Picker
-            style={{ width: "100%" }}
-            onValueChange={(itemValue, itemIndex) => setSelected(itemValue)}
-            selectedValue={selected}
-          >
-            {items.map((item, index) => {
-              return (
-                <Picker.Item
-                  key={index}
-                  label={item.label}
-                  value={item.value}
-                />
-              );
-            })}
-          </Picker>
+        <Picker
+          style={{ width: "100%" }}
+          onValueChange={(itemValue, itemIndex) => { setSelected(itemValue); setIndex(itemIndex) }}
+          selectedValue={selected}
+          
+        >
+          <Picker.Item label={pickplacehold} value={pickplacehold} />
+          {items.map((item, index) => {
+            return (
+              <Picker.Item
+                key={index}
+                label={item.name_th}
+                value={item.name_th}
+              />
+            );
+          })}
+        </Picker>
       )}
     </>
   );
@@ -135,12 +138,12 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "flex-end",
   },
-  pickerButton:{
+  pickerButton: {
     borderRadius: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding:10,
+    padding: 10,
     width: '95%',
     backgroundColor: '#c9c9c9',
   },

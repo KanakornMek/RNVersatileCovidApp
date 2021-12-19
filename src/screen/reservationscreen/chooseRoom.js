@@ -12,117 +12,68 @@ import {
   TouchableHighlight,
 } from "react-native";
 import { Shadow } from "react-native-shadow-2";
+import firestore from "@react-native-firebase/firestore";
 
 export default function Room({ route, navigation }) {
-    const hospitalName= route.params.dataParams.hospital_name;
+  const hospital = route.params.dataParams;
+  const docId =hospital.id;
+  const hosData = hospital.data;
+  const [rooms, setRooms] = useState([]);
+  useEffect(() => {
+    const subscriber = firestore().collection("reserveBed").doc(docId).collection("rooms")
+    .onSnapshot((querySnapshot) => {
+        var result = [];
+        querySnapshot.forEach((doc) => {
+            result.push({data: doc.data(), id: doc.id});
+        });
+        setRooms(result);
+
+    });
+    return () => subscriber();
+  }, []);
+
   return (
     <ScrollView style={styles.container}>
-      <Shadow containerViewStyle={{ margin: 10 }}>
-        <View style={styles.roomContainer}>
-          <Image
-            style={{
-              width: "100%",
-              aspectRatio: 2 / 1,
-              borderTopLeftRadius: 15,
-              borderTopRightRadius: 15,
-            }}
-            source={{
-              uri: "https://www.vejthani.com/wp-content/uploads/2020/01/PREMIUM-WARD-GRAND-SINGLE-6.jpg",
-            }}
-          />
-
-          <View style={styles.roomdetailBox}>
-            <View style={styles.titleWrapper}>
-              <Text style={styles.titleRoom}>ห้องเดี่ยว</Text>
-              <TouchableHighlight
-                style={{ borderRadius: 15 }}
-                activeOpacity={0.8}
-                onPress={() => navigation.push('ReserveForm',{hospitalName: hospitalName,roomType: 'ห้องเดี่ยว'})}
-              >
-                <View style={styles.button}>
-                  <Text style={{ color: "white", fontSize: 20, margin: 5 }}>
-                    จอง
-                  </Text>
+      {rooms.map((item, index) => {
+        return (
+          <Shadow key={index} containerViewStyle={{ margin: 10 }}>
+            <View style={styles.roomContainer}>
+              <Image
+                style={{
+                  width: "100%",
+                  aspectRatio: 2 / 1,
+                  borderTopLeftRadius: 15,
+                  borderTopRightRadius: 15,
+                }}
+                source={{
+                  uri: "https://www.vejthani.com/wp-content/uploads/2020/01/PREMIUM-WARD-GRAND-SINGLE-6.jpg",
+                }}
+              />
+              <View style={styles.roomdetailBox}>
+                <View style={styles.titleWrapper}>
+                  <Text style={styles.titleRoom}>{item.data.room_title}</Text>
+                  <TouchableHighlight
+                    style={{ borderRadius: 15 }}
+                    activeOpacity={0.8}
+                    onPress={() => navigation.push('ReserveForm', { hospitalId: docId, hospitalData: hosData, roomType: item.data.room_title })}
+                  >
+                    <View style={styles.button}>
+                      <Text style={{ color: "white", fontSize: 20, margin: 5 }}>
+                        จอง
+                      </Text>
+                    </View>
+                  </TouchableHighlight>
                 </View>
-              </TouchableHighlight>
-            </View>
-            <View>
-              <Text style={{ color: "#595959" }}>คงเหลือ 100 เตียง</Text>
-            </View>
-          </View>
-        </View>
-      </Shadow>
-      <Shadow containerViewStyle={{ margin: 10 }}>
-        <View style={styles.roomContainer}>
-          <Image
-            style={{
-              width: "100%",
-              aspectRatio: 2 / 1,
-              borderTopLeftRadius: 15,
-              borderTopRightRadius: 15,
-            }}
-            source={{
-              uri: "https://www.gannett-cdn.com/-mm-/bd28db540009f871cff8a10081fa6b265ee35a78/c=0-50-2222-1300/local/-/media/2020/03/16/USATODAY/usatsports/gettyimages-1153684245.jpg?width=660&height=372&fit=crop&format=pjpg&auto=webp",
-            }}
-          />
-
-          <View style={styles.roomdetailBox}>
-            <View style={styles.titleWrapper}>
-              <Text style={styles.titleRoom}>ห้องรวม</Text>
-              <TouchableHighlight
-                style={{ borderRadius: 15 }}
-                activeOpacity={0.8}
-                onPress={() => alert("Pressed!")}
-              >
-              <View style={styles.button}>
-                <Text style={{ color: "white", fontSize: 20, margin: 5 }}>
-                  จอง
-                </Text>
+                <View>
+                  <Text style={{ color: "#595959" }}>คงเหลือ {item.data.available} เตียง</Text>
+                </View>
               </View>
-              </TouchableHighlight>
             </View>
-            <View>
-              <Text style={{ color: "#595959" }}>คงเหลือ 100 เตียง</Text>
-            </View>
-          </View>
-        </View>
-      </Shadow>
-      <Shadow containerViewStyle={{ margin: 10 }}>
-        <View style={styles.roomContainer}>
-          <Image
-            style={{
-              width: "100%",
-              aspectRatio: 2 / 1,
-              borderTopLeftRadius: 15,
-              borderTopRightRadius: 15,
-            }}
-            source={{
-              uri: "https://www.gannett-cdn.com/-mm-/bd28db540009f871cff8a10081fa6b265ee35a78/c=0-50-2222-1300/local/-/media/2020/03/16/USATODAY/usatsports/gettyimages-1153684245.jpg?width=660&height=372&fit=crop&format=pjpg&auto=webp",
-            }}
-          />
-
-          <View style={styles.roomdetailBox}>
-            <View style={styles.titleWrapper}>
-              <Text style={styles.titleRoom}>ห้องรวม</Text>
-              <TouchableHighlight
-                style={{ borderRadius: 15 }}
-                activeOpacity={0.8}
-                onPress={() => alert("Pressed!")}
-              >
-              <View style={styles.button}>
-                <Text style={{ color: "white", fontSize: 20, margin: 5 }}>
-                  จอง
-                </Text>
-              </View>
-              </TouchableHighlight>
-            </View>
-            <View>
-              <Text style={{ color: "#595959" }}>คงเหลือ 100 เตียง</Text>
-            </View>
-          </View>
-        </View>
-      </Shadow>
-    </ScrollView>
+          </Shadow>
+        );
+      }
+      )}
+      </ScrollView>
   );
 }
 
