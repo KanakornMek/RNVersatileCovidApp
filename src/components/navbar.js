@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import auth from '@react-native-firebase/auth';
-
+import firestore from '@react-native-firebase/firestore';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -16,9 +16,18 @@ import Account from '../screen/accountscreen/account';
 
 const Tab = createBottomTabNavigator();
 
+export const AuthContext = React.createContext();
 export default function Navbar({navigation}) {
+    const [authInfo, setAuthInfo] = React.useState({});
+    
+    useEffect(() => {
+        const subscriber =firestore().collection('users').doc(auth().currentUser.uid).onSnapshot(doc => {
+            setAuthInfo(doc.data());
+        });
+        return () => subscriber();
+    }, [auth().currentUser.uid]);
     return (
-        <>
+        <AuthContext.Provider value={authInfo}>
         {!auth().currentUser && navigation.navigate('Auth')}
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -56,6 +65,6 @@ export default function Navbar({navigation}) {
             <Tab.Screen name='Chatbot' component={Chatbot}/>
             <Tab.Screen name='Account' options={{headerStyle: {height: 33, backgroundColor:'#15ABFF'}}} component={Account} />
         </Tab.Navigator>
-        </>
+        </AuthContext.Provider>
     );
 }

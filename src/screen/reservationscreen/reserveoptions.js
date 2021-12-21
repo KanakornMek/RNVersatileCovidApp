@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -8,100 +8,77 @@ import {
   Button,
   Image,
   TouchableHighlight,
+  Alert,
 } from "react-native";
+import firestore from "@react-native-firebase/firestore";
 import PlatformPicker from "./components/picker";
 import Foundation from 'react-native-vector-icons/Foundation';
 
-export default function ReserveOpt({navigation}) {
-  const [hospitals, setHospital] = useState([
-    {
-      hospital_name: 'รพ.จุฬาลงกรณ์',
-      available: 250,
-      allbed: 500,
-      setBool: false,
-    },
-    {
-      hospital_name: 'รพ.กรุงเทพ',
-      available: 300,
-      allbed: 500,
-    },
-    {
-      hospital_name: 'รพ.รามาธิบดี',
-      available: 210,
-      allbed: 500,
-    },
-    {
-      hospital_name: 'รพ.ศิริราช',
-      available: 216,
-      allbed: 500,
-    },
-    {
-      hospital_name: 'รพ.วิภาวดี',
-      available: 200,
-      allbed: 500,
-    },
-    {
-      hospital_name: 'Triamudom',
-      available: 200,
-      allbed: 500,
-    },
+import * as loData from './utils/location.json';
 
-  ]);
+const locationData = JSON.parse(JSON.stringify(loData));
+
+export default function ReserveOpt({ navigation }) {
+  const [province, setProvince] = useState("");
+  const [district, setDistrict] = useState("");
+  const [provinceIndex, setProvinceIndex] = useState(1);
+  const [districtIndex, setDistrictIndex] = useState(0);
+  const [hospitals, setHospital] = useState([]);
+  useEffect(() => {
+    if (province !== "" && district !== "") {
+      const subscriber = firestore().collection("reserveBed").where("province", "==", province).where("district", "==", district)
+        .onSnapshot((querySnapshot) => {
+          var result = [];
+          querySnapshot.forEach((doc) => {
+            result.push({ data: doc.data(), id: doc.id });
+          });
+          setHospital(result);
+        });
+      return () => subscriber();
+    }
+  });
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.textStyle}>โปรดระบุจังหวัด</Text>
       <PlatformPicker
         pickplacehold={"กรุณาเลือกจังหวัด"}
-        items={[
-          {
-            label: "กรุงเทพมหานคร",
-            value: "กรุงเทพมหานคร",
-          },
-          {
-            label: "กระบี่",
-            value: "กระบี่",
-          },
-          {
-            label: "กาญจนบุรี",
-            value: "กาญจนบุรี",
-          },
-          {
-            label: "กาฬสินธุ์",
-            value: "กาฬสินธุ์",
-          },
-        ]}
+        items={locationData.default}
+        selected={province}
+        setSelected={setProvince}
+        setIndex={setProvinceIndex}
+        onChangeSelect={() => {setDistrict(""); setDistrictIndex(0);}}
       />
       <Text style={styles.textStyle}>โปรดระบุเขต</Text>
       <PlatformPicker
         pickplacehold={"กรุณาเลือกเขต"}
-        items={[
-          {
-            label: "พญาไท",
-            value: "พญาไท",
-          },
-        ]}
+        items={locationData.default[provinceIndex].amphure || []}
+        selected={district}
+        setSelected={setDistrict}
+        setIndex={setDistrictIndex}
       />
       <View style={{ width: "100%", alignItems: "center", marginVertical: 15 }}>
         <TouchableHighlight
           style={{ width: "95%", borderRadius: 10 }}
           activeOpacity={0.8}
-          onPress={() => alert("Pressed!")}
+          onPress={() => Alert.alert('fff')}
         >
           <View style={styles.searchButton}>
             <Text style={{ color: "white", fontSize: 17 }}>ค้นหา</Text>
           </View>
         </TouchableHighlight>
-        
+
       </View>
       <ScrollView>
         {hospitals.map((hospital, index) => {
-          return(
-            <Pressable onPress={() => navigation.push('chooseRoom',{dataParams: hospital})} key={index} style={styles.hospitalBox}>
+          return (
+            <Pressable onPress={() => navigation.push('chooseRoom', { dataParams: hospital })} key={index} style={styles.hospitalBox}>
               <View style={styles.titleBox} >
                 <Foundation name="plus" size={30} color='red' />
-                <Text style={styles.titleText}>{hospital.hospital_name}</Text>
+                <Text style={styles.titleText}>{hospital.data.hospital_name}</Text>
               </View>
-              <Text>เตียงว่าง: <Text>{hospital.available}</Text>/<Text>{hospital.allbed}</Text></Text>
+              <Text>เตียงว่าง: <Text>{hospital.data.available}</Text>/<Text>{hospital.data.allbed}</Text></Text>
             </Pressable>
           );
         })}
