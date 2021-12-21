@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
+  ScrollView,
   Text,
   View,
   Platform,
@@ -8,92 +9,76 @@ import {
   TouchableWithoutFeedback,
   Button,
   Pressable,
+  TextInput,
+  TouchableOpacity,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-export default function PlatformPicker({ items, pickplacehold, setSelected, selected, setIndex }) {
+export default function PlatformPicker({ items, pickplacehold, setSelected, selected, setIndex, onChangeSelect }) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   return (
     <>
-      {Platform.OS === "ios" && (
-        <>
-          <Modal
-            presentationStyle="overFullScreen"
-            animationType="fade"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              setModalVisible(!modalVisible);
-            }}
-          >
-            <TouchableWithoutFeedback
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <View style={styles.centeredView}>
-                <TouchableWithoutFeedback>
-                  <View style={styles.modalView}>
-                    <View style={styles.doneButton}>
-                      <Button
-                        title="Done"
-                        onPress={() => setModalVisible(!modalVisible)}
-                      />
-                    </View>
-                    <Picker
-                      style={{ width: "100%" }}
-                      onValueChange={(itemValue, itemIndex) => {
-                        setSelected(itemValue)
-                        setIndex(itemIndex)
-                      }
-                      }
-                      selectedValue={selected}
-                    >
-                      <Picker.Item label={pickplacehold} value={pickplacehold} />
-                      {items.default.map((item, index) => {
-                        return (
-                          <Picker.Item
-                            key={index}
-                            label={item.name_th}
-                            value={item.name_th}
-                          />
-                        );
-                      })}
-                    </Picker>
-                  </View>
-                </TouchableWithoutFeedback>
+
+      <Modal
+        presentationStyle="overFullScreen"
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <TouchableWithoutFeedback
+          onPress={() => setModalVisible(!modalVisible)}
+        >
+          <View style={styles.centeredView}>
+            <TouchableWithoutFeedback>
+              <View style={styles.modalView}>
+                <View style={styles.doneButton}>
+                  <Button
+                    title="Done"
+                    onPress={() => setModalVisible(!modalVisible)}
+                  />
+                </View>
+                <TextInput onChangeText={(text) => setSearchTerm(text)} />
+                <ScrollView style={{ width: '100%' }} contentContainerStyle={styles.picker}>
+                  {items.filter((val) => {
+                    if (searchTerm == "") {
+                      return val;
+                    } else if (val.name_th.toLowerCase().includes(searchTerm.toLowerCase())) {
+                      return val;
+                    }
+                  }).map((item, index) => {
+                    return (
+                      <TouchableOpacity key={index} onPress={() => {
+                        setSelected(item.name_th);
+                        setIndex(index);
+                        setModalVisible(!modalVisible);
+                        onChangeSelect && onChangeSelect();
+                      }}>
+                        <Text style={{ fontSize: 25 }} key={index}>{item.name_th}</Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </ScrollView>
               </View>
             </TouchableWithoutFeedback>
-          </Modal>
-          <View style={{ width: '100%', alignItems: 'center', marginTop: 10, }}>
-            <Pressable
-              style={styles.pickerButton}
-              onPress={() => setModalVisible(true)}
-            >
-              <Text style={styles.textStyle}>{selected}</Text>
-              <AntDesign name={'caretdown'} size={15} color={'#4b4b4b'} />
-            </Pressable>
           </View>
-        </>
-      )}
-      {Platform.OS !== "ios" && (
-        <Picker
-          style={{ width: "100%" }}
-          onValueChange={(itemValue, itemIndex) => { setSelected(itemValue); setIndex(itemIndex) }}
-          selectedValue={selected}
-          
+        </TouchableWithoutFeedback>
+      </Modal>
+      <View style={{ width: '100%', alignItems: 'center', marginTop: 10, }}>
+        <Pressable
+          style={styles.pickerButton}
+          onPress={() => setModalVisible(true)}
         >
-          <Picker.Item label={pickplacehold} value={pickplacehold} />
-          {items.map((item, index) => {
-            return (
-              <Picker.Item
-                key={index}
-                label={item.name_th}
-                value={item.name_th}
-              />
-            );
-          })}
-        </Picker>
-      )}
+          <Text style={styles.textStyle}>{selected === '' ? pickplacehold : selected}</Text>
+          <AntDesign name={'caretdown'} size={15} color={'#4b4b4b'} />
+        </Pressable>
+      </View>
+
+
     </>
   );
 }
@@ -114,6 +99,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: "90%",
+    height: '50%',
     backgroundColor: "white",
     borderRadius: 20,
     padding: 5,
@@ -126,6 +112,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+
   },
 
   textStyle: {
@@ -147,4 +134,7 @@ const styles = StyleSheet.create({
     width: '95%',
     backgroundColor: '#c9c9c9',
   },
+  picker: {
+    alignItems: 'center',
+  }
 });

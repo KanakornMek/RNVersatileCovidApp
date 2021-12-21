@@ -25,20 +25,20 @@ export default function ReserveOpt({ navigation }) {
   const [districtIndex, setDistrictIndex] = useState(0);
   const [hospitals, setHospital] = useState([]);
   useEffect(() => {
-    if(province !== "" && district !== ""){
-    const subscriber = firestore().collection("reserveBed").where("province", "==", province).where("district", "==", district)
-    .onSnapshot((querySnapshot) => {
-        var result = [];
-        querySnapshot.forEach((doc) => {
-            result.push({data: doc.data(), id: doc.id});
+    if (province !== "" && district !== "") {
+      const subscriber = firestore().collection("reserveBed").where("province", "==", province).where("district", "==", district)
+        .onSnapshot((querySnapshot) => {
+          var result = [];
+          querySnapshot.forEach((doc) => {
+            result.push({ data: doc.data(), id: doc.id });
+          });
+          setHospital(result);
         });
-        setHospital(result);
-       
-    });
-    return () => subscriber();
-   
-  }
+      return () => subscriber();
+    }
   });
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.textStyle}>โปรดระบุจังหวัด</Text>
@@ -48,11 +48,12 @@ export default function ReserveOpt({ navigation }) {
         selected={province}
         setSelected={setProvince}
         setIndex={setProvinceIndex}
+        onChangeSelect={() => {setDistrict(""); setDistrictIndex(0);}}
       />
       <Text style={styles.textStyle}>โปรดระบุเขต</Text>
       <PlatformPicker
         pickplacehold={"กรุณาเลือกเขต"}
-        items={locationData.default[provinceIndex-1].amphure || []}
+        items={locationData.default[provinceIndex].amphure || []}
         selected={district}
         setSelected={setDistrict}
         setIndex={setDistrictIndex}
