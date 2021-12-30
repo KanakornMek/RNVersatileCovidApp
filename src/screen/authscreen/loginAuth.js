@@ -16,8 +16,8 @@ import TextBox from './components/textbox';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function LoginScreen({navigation}) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('admin@o.com');
+  const [password, setPassword] = useState('123456');
 
   function handleLogin() {
     auth().signInWithEmailAndPassword(email, password).then(() => {

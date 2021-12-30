@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, Text, View, Button, Image, SafeAreaView } from 'react-native';
+import { Pressable, StyleSheet, Text, View, Button, Image, SafeAreaView, Modal } from 'react-native';
 import { Dimensions } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Entypo from 'react-native-vector-icons/Entypo'
@@ -32,7 +32,7 @@ export default function Account({navigation}) {
 
             <View style={styles.bottom}>
                 <View style={styles.backdrop}>
-                    <Pressable style={styles.clickable}>
+                    <Pressable style={styles.clickable} onPress={() => navigation.navigate('EditProfile')}>
                         <View style={{ width: 50 }} >
                             <MaterialIcons name='account-circle' size={50} color='#727272' />
                         </View>

@@ -13,6 +13,7 @@ import Home from '../screen/mainscreen/main';
 import Reservation from '../screen/reservationscreen/reservationNav';
 import Chatbot from '../screen/otherfunctionscreen/maino.function';
 import Account from '../screen/accountscreen/account';
+import AccountNav from '../screen/accountscreen/components/accountNav';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,7 +26,7 @@ export default function Navbar({navigation}) {
             setAuthInfo(doc.data());
         });
         return () => subscriber();
-    }, [auth().currentUser.uid]);
+    }, []);
     return (
         <AuthContext.Provider value={authInfo}>
         {!auth().currentUser && navigation.navigate('Auth')}
@@ -63,7 +64,7 @@ export default function Navbar({navigation}) {
             <Tab.Screen name='Home' component={Home}/>
             <Tab.Screen name='Reservation' component={Reservation} />
             <Tab.Screen name='Chatbot' component={Chatbot}/>
-            <Tab.Screen name='Account' options={{headerStyle: {height: 33, backgroundColor:'#15ABFF'}}} component={Account} />
+            <Tab.Screen name='Account' options={{headerStyle: {height: 33, backgroundColor:'#15ABFF'}}} component={AccountNav} />
         </Tab.Navigator>
         </AuthContext.Provider>
     );
