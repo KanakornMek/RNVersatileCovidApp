@@ -51,7 +51,7 @@ export default function PlatformPicker({ items, setSelected, selected, style, ti
                                                     <Picker.Item
                                                         key={index}
                                                         label={item}
-                                                        value={index + 1}
+                                                        value={index}
                                                     />
                                                 );
                                             })}
@@ -89,7 +89,7 @@ export default function PlatformPicker({ items, setSelected, selected, style, ti
                                     <Picker.Item
                                         key={index}
                                         label={item}
-                                        value={index + 1}
+                                        value={index}
                                     />
                                 );
                             })}

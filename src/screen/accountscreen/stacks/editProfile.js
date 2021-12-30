@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
     StyleSheet,
     Text,
@@ -23,22 +23,35 @@ const days = ['-', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'
 const months = ['-', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
 export default function EditProfile({ navigation }) {
     const authData = useContext(AuthContext);
+
     const [image, setImage] = useState({ path: authData.profilePic });
     const [imagechanged, setImagechanged] = useState(false);
     const [firstname, setFirstname] = useState(authData.firstname);
     const [lastname, setLastname] = useState(authData.lastname);
-    const [birthMonth, setBirthMonth] = useState('');
-    const [birthday, setBirthday] = useState('');
-    const [birthYear, setBirthYear] = useState('');
+    const [birthMonth, setBirthMonth] = useState(timestampToDate( authData.birthDate).month);
+    const [birthday, setBirthday] = useState(timestampToDate( authData.birthDate).day);
+    const [birthYear, setBirthYear] = useState(timestampToDate(authData.birthDate).year.toString());
+    const [phone, setPhone] = useState(authData.phoneNumber);
     const [gender, setGender] = useState(authData.gender === 'male' ? 1 : 2);
-    const [birthDate, setBirthdate] = useState(0);
     const uid = auth().currentUser.uid;
-    function uploadtoStorage() {
+
+    useEffect(() =>{
+        console.log(timestampToDate(authData.birthDate))
+    },[birthMonth,birthday,birthYear]);
+
+    function uploadtoStorage(birthDate) {
         storage().ref(`userData/${uid}/profilePic`).putFile(image.path).then(() => {
-            updateInfo();
+            updateInfo(birthDate);
         })
     }
-    async function updateInfo() {
+    function timestampToDate(timestamp) {
+        var date = new Date(timestamp);
+        var day = date.getDate();
+        var month = date.getMonth();
+        var year = date.getFullYear();
+        return { day, month, year };
+    }
+    async function updateInfo(birthDate) {
 
         const url = await storage().ref(`userData/${uid}/profilePic`).getDownloadURL();
         firestore().collection('users').doc(uid).update({
@@ -47,6 +60,11 @@ export default function EditProfile({ navigation }) {
             lastname: lastname,
             gender: gender === 1 ? 'male' : 'female',
             birthDate: birthDate,
+            phoneNumber: phone,
+        }).then(() => {
+            console.log('success');
+        }).catch((e) => {
+            console.log(e);
         })
     }
 
@@ -79,7 +97,7 @@ export default function EditProfile({ navigation }) {
                         title={'เพศ'}
                         style={{ flex: 1 }}
                     />
-                    <TextBox title={'เบอร์โทรศัพท์'} value={'0953333333'} keyType={'phone-pad'} limit={10} style={{ flex: 1 }} />
+                    <TextBox title={'เบอร์โทรศัพท์'} value={phone} setState={setPhone} keyType={'phone-pad'} limit={10} style={{ flex: 1 }} />
                 </View>
                 <View style={styles.row}>
 
@@ -107,8 +125,8 @@ export default function EditProfile({ navigation }) {
 
             </View>
             <Button title='Press' onPress={() => {
-                setBirthdate(getDate(birthday, birthMonth, birthYear));
-                { imagechanged ? uploadtoStorage() : updateInfo() }
+                const birthDate = getDate(birthday, birthMonth, birthYear);
+                { imagechanged ? uploadtoStorage(birthDate) : updateInfo(birthDate) }
                 
             }} />
         </View>
@@ -117,13 +135,8 @@ export default function EditProfile({ navigation }) {
 
 // turn day month year into date unix timestamp 
 function getDate(day, month, year) {
-    console.log(day, month, year);
-    var dayInt = (parseInt(day) - 1);
-    var monthInt = (parseInt(month) - 1);
-    var yearInt = parseInt(year);
-    console.log(dayInt, monthInt, yearInt);
-    var date = new Date(yearInt, monthInt, dayInt).getTime();
-    console.log(date);
+    let yearInt = parseInt(year);
+    var date = new Date(yearInt, month, day).getTime();
     return date;
 }
 
