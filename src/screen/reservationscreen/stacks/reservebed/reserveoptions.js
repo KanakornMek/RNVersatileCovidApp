@@ -11,10 +11,10 @@ import {
   Alert,
 } from "react-native";
 import firestore from "@react-native-firebase/firestore";
-import PlatformPicker from "./components/picker";
+import PlatformPicker from "../../components/picker";
 import Foundation from 'react-native-vector-icons/Foundation';
 
-import * as loData from './utils/location.json';
+import * as loData from '../../utils/location.json';
 
 const locationData = JSON.parse(JSON.stringify(loData));
 

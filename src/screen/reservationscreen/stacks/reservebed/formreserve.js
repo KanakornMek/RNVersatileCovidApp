@@ -4,9 +4,9 @@ import {
   StyleSheet,
   Text,
   View,
-  KeyboardAvoidingView,
+
   Image,
-  ActivityIndicator,
+  
   TextInput,
   ScrollView,
   Modal,
@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { AuthContext } from "../../components/navbar";
+import { AuthContext } from "../../../../components/navbar";
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -29,21 +29,19 @@ export default function Form({ route, navigation }) {
   const [surname, setSurname] = useState(authData.lastname);
   const [phonenumber, setPhonenumber] = useState(authData.phoneNumber);
   
-  function handleSubmit(){
-    console.log(hospitalId);
-    if(hospitalId){
-    firestore().collection('reserveBed').doc(hospitalId).collection('requests').add({
-      firstname: name,
-      lastname: surname,
-      phoneNumber: phonenumber,
-      roomType: roomType,
-      userId: auth().currentUser.uid,
-    }).then(() => {
-      console.log('success');
-    });
-  }
-    
-  }
+  // function handleSubmit(){
+  //   console.log(hospitalId);
+  //   if(hospitalId){
+  //   firestore().collection('reserveBed').doc(hospitalId).collection('requests').add({
+  //     firstname: name,
+  //     lastname: surname,
+  //     phoneNumber: phonenumber,
+  //     roomType: roomType,
+  //     userId: auth().currentUser.uid,
+  //   }).then(() => {
+  //     console.log('success');
+  //   });
+  // }}
   return (
     <KeyboardAwareScrollView
       style={{ backgroundColor: "white" }}
@@ -67,14 +65,12 @@ export default function Form({ route, navigation }) {
             <Text style={styles.text}>{hospitalName}</Text>
             <Text style={styles.titleText}>ประเภทของห้อง</Text>
             <Text style={[styles.text, { marginBottom: 10 }]}>{roomType}</Text>
+            <Text style={styles.titleText}>ข้อมูลส่วนตัว</Text>
+            <Text style={styles.text}>ชื่อ {name}</Text>
+            <Text style={styles.text}>นามสกุล {surname}</Text>
+            <Text style={styles.text}>เบอร์โทรศัพท์ {phonenumber}</Text>
 
-            <InputFormField label="ชื่อ" setState={setName} value={name} />
-            <InputFormField label="นามสกุล" setState={setSurname} value={surname} />
-
-            <InputFormField label="ิอายุ" />
-            <InputFormField label="เบอร์โทรศัพท์" setState={setPhonenumber} value={phonenumber} />
-            <InputFormField label="ที่อยู่" />
-
+          
             <View
               style={{
                 width: "100%",
@@ -83,7 +79,7 @@ export default function Form({ route, navigation }) {
               }}
             >
               <Pressable
-                onPress={handleSubmit}
+                onPress={ () => {navigation.navigate('AddDocuments')}}
                 style={{
                   width: "85%",
                   backgroundColor: "#0291fb",
@@ -93,7 +89,7 @@ export default function Form({ route, navigation }) {
                   borderRadius: 7
                 }}
               >
-                <Text style={{ color: 'white' }}>ยืนยัน</Text>
+                <Text style={{ color: 'white' }}>ต่อไป</Text>
               </Pressable>
             </View>
           </View>
@@ -143,8 +139,10 @@ const styles = StyleSheet.create({
 
   titleText: {
     fontSize: 30,
+    fontFamily: 'Prompt-Regular',
   },
   text: {
+    fontFamily: 'Prompt-Regular',
     fontSize: 20,
   },
 });

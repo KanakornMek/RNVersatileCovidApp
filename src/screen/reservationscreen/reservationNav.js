@@ -8,10 +8,11 @@ import { getHeaderTitle } from '@react-navigation/elements';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import MainReserve from './mainreservation';
-import ReserveOpt from './reserveoptions';
-import Room from './chooseRoom';
-import Form from './formreserve';
+import ReserveOpt from './stacks/reservebed/reserveoptions';
+import Room from './stacks/reservebed/chooseRoom';
+import Form from './stacks/reservebed/formreserve';
 import auth from '@react-native-firebase/auth';
+import AddDocuments from './stacks/reservebed/addDocuments';
 const Stack = createStackNavigator();
 
 export default function ReserveNav() {
@@ -118,6 +119,11 @@ export default function ReserveNav() {
             );
           },
         }}
+      />
+      <Stack.Screen
+        name="AddDocuments"
+        component={AddDocuments}
+        
       />
 
     </Stack.Navigator>
