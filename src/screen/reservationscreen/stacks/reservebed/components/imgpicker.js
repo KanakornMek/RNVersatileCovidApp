@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     Alert,
     Platform,
+    ActionSheetIOS,
 } from "react-native";
 import PreviewImg from "./modalPreviewImg";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -47,7 +48,7 @@ export default function ImgPicker({ img, setImg, title }) {
     return (
         <>
             <PreviewImg show={modal} setShow={setModal} img={img} />
-            <View style={{width: '100%'}} >
+            <View style={{width: '100%',marginBottom: 10}} >
                 <Text style={styles.textStyle}>{title}</Text>
                 {!added ?
                     <TouchableOpacity onPress={() => {
@@ -67,6 +68,20 @@ export default function ImgPicker({ img, setImg, title }) {
                             
                             ])
                         )}
+                        {Platform.OS === 'ios' && (
+                            ActionSheetIOS.showActionSheetWithOptions({
+                                options: ['ถ่ายรูปภาพ', 'เลือกรูปภาพจากคลังรูปภาพ', 'ยกเลิก'],
+                                cancelButtonIndex: 2,
+                            },
+                                buttonIndex => {
+                                    if (buttonIndex === 0) {
+                                        handleCamera()
+                                    } else if (buttonIndex === 1) {
+                                        handleImage()
+                                    }
+                                }
+                            )
+                            )}
                         
                     }}>
                         <MaterialCommunityIcons name="plus-box-outline" size={30} />

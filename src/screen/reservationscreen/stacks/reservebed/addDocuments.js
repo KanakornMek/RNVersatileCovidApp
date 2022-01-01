@@ -20,17 +20,17 @@ export default function AddDocuments() {
             <View style={styles.container}>
                 <Image style={styles.img} source={{ uri: "https://www.vejthani.com/wp-content/uploads/2020/01/PREMIUM-WARD-GRAND-SINGLE-6.jpg" }} />
                 <ImgPicker 
-                    title='เเนบรูปถ่ายบัตรประชาชนพร้อมหน้าเจ้าของ' 
+                    title='แนบรูปถ่ายบัตรประชาชนพร้อมหน้าเจ้าของ' 
                     img={IdwithFace} 
                     setImg={setIdwithFace} 
                 />
                 <ImgPicker 
-                    title='เเนบรูปถ่ายบัตรประชาชน'
+                    title='แนบรูปถ่ายบัตรประชาชน'
                     img={IdImg}
                     setImg={setIdImg}
                 />
                 <ImgPicker
-                    title='เเนบไฟล์การตรวจโควิด'
+                    title='แนบไฟล์การตรวจโควิด'
                     img={covidTest}
                     setImg={setCovidTest}
                 />
@@ -43,11 +43,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        padding: 10,
+        padding: 20,
     },
     img: {
         width: "80%",
         aspectRatio: 4 / 3,
+        marginBottom: 50
     },
     textStyle: {
         fontSize: 20,

@@ -51,6 +51,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Need access to photos</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Need access to camera</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

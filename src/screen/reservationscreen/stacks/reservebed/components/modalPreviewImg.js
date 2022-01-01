@@ -5,10 +5,10 @@ import {
     StyleSheet,
     Modal,
     Dimensions,
-    Image,
     TouchableWithoutFeedback,
+    Image
 } from "react-native";
-import ReactNativeZoomableView from "@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView";
+import { ReactNativeZoomableView } from "@dudigital/react-native-zoomable-view/dist";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default function PreviewImg({ show, setShow, img }) {
@@ -16,6 +16,7 @@ export default function PreviewImg({ show, setShow, img }) {
         <Modal
             transparent
             visible={show}
+            animationType="fade"
         >
 
             <View style={styles.centered}>
@@ -27,17 +28,20 @@ export default function PreviewImg({ show, setShow, img }) {
                     <Ionicons name="close" size={15} color={'black'} />
                 </View>
                 </TouchableWithoutFeedback>
+                <View>
+
                 <ReactNativeZoomableView
-                    maxZoom={1.5}
+                    maxZoom={3}
                     minZoom={1}
-                    zoomStep={0.5}
+                    
                     initialZoom={1}
                     bindToBorders={true}
-                    zoomEnabled={true}
-                 
+                    captureEvent={true}
+
                 >
-                    <Image resizeMode="contain" source={{ uri: img.path }} style={[styles.previewImg, { aspectRatio: img.width / img.height }]} />
+                    <Image  source={{ uri: img.path }} style={[styles.previewImg,{aspectRatio: img.width/img.height}]} />
                 </ReactNativeZoomableView>
+                    </View>
             </View>
 
         </Modal>
@@ -48,7 +52,6 @@ const height = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
     centered: {
-        height: height,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "rgb(0, 0, 0)",
@@ -61,7 +64,7 @@ const styles = StyleSheet.create({
     },
     closeButton: {
         position: "absolute",
-        top: 10,
+        top: 40,
         right: 10,
         zIndex: 1,
         padding: 5,
