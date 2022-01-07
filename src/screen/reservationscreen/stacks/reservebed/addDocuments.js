@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
     View,
     Text,
     StyleSheet,
     Image,
     TouchableOpacity,
+    Pressable,
 } from 'react-native';
-import ImageCropPicker from "react-native-image-crop-picker";
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import PreviewImg from "./components/modalPreviewImg";
+import firestore from '@react-native-firebase/firestore';
+import { AuthContext } from '../../../../components/navbar'
 import ImgPicker from "./components/imgpicker";
+
+
 export default function AddDocuments() {
+    const authData = useContext(AuthContext);
     const [IdwithFace, setIdwithFace] = useState({});
     const [IdImg, setIdImg] = useState({});
     const [covidTest, setCovidTest] = useState({});
@@ -30,10 +32,15 @@ export default function AddDocuments() {
                     setImg={setIdImg}
                 />
                 <ImgPicker
-                    title='แนบไฟล์การตรวจโควิด'
+                    title='แนบไฟล์การตรวจ PCR'
                     img={covidTest}
                     setImg={setCovidTest}
                 />
+               <Pressable onPress={() => {
+
+               }}>
+                    <Text>ยืนยัน</Text>   
+                </Pressable> 
             </View>
         </>
     );

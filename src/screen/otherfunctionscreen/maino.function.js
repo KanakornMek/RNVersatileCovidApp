@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, View, Button, Image} from 'react-native';
 
-export default function Chatbot() {
+export default function OtherFunc({navigation}) {
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
-        <Pressable style={styles.imageContainer}>
+        <Pressable style={styles.imageContainer}
+          onPress={() => navigation.push("Chatbot") }
+        >
           <Image
             resizeMode="contain"
             style={{width: '100%'}}
@@ -79,12 +81,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   text1: {
-    fontWeight: 'bold',
     fontSize: 35,
     color: 'black',
+    fontFamily: 'Prompt-Bold',
   },
   text2: {
     fontSize: 20,
     color: 'black',
+    fontFamily: 'Prompt-Regular',
   },
 });

@@ -35,8 +35,10 @@ export default function ReserveOpt({ navigation }) {
           setHospital(result);
         });
       return () => subscriber();
+    } else {
+      setHospital([]);
     }
-  });
+  },[province, district]);
 
 
   return (

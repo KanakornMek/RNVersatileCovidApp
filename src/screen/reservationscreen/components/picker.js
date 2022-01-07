@@ -12,12 +12,12 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function PlatformPicker({ items, pickplacehold, setSelected, selected, setIndex, onChangeSelect }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  
   return (
     <>
 
@@ -42,7 +42,7 @@ export default function PlatformPicker({ items, pickplacehold, setSelected, sele
                     onPress={() => setModalVisible(!modalVisible)}
                   />
                 </View>
-                <TextInput onChangeText={(text) => setSearchTerm(text)} />
+                <TextInput style={{borderBottomWidth: 1, padding: 0, marginVertical: 10, width: '85%', fontSize: 20 }} underlineColorAndroid='transparent' textAlign="center" onChangeText={(text) => setSearchTerm(text)} />
                 <ScrollView style={{ width: '100%' }} contentContainerStyle={styles.picker}>
                   {items.filter((val) => {
                     if (searchTerm == "") {
