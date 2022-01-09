@@ -20,9 +20,9 @@ export default function ImgPicker({ img, setImg, title }) {
     const [imgFilename, setImgFilename] = React.useState("");
     function handleCamera(){
         ImageCropPicker.openCamera({
-            width: 800,
-            height: 1200, 
-            mediaType: "photo",            
+            mediaType: "photo",     
+            cropping: true,
+            freeStyleCropEnabled: true,
         }).then(image => {
             setImg(image);
             console.log(image);
@@ -34,9 +34,10 @@ export default function ImgPicker({ img, setImg, title }) {
     }
     function handleImage(){
         ImageCropPicker.openPicker({
-            width: 800,
-            height: 1200,
+
             mediaType: "photo",
+            cropping: true,
+            freeStyleCropEnabled: true,
         }).then(image => {
             setImg(image);
             console.log(image);

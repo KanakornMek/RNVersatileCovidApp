@@ -95,7 +95,11 @@ export default function Chatbot() {
             </TouchableOpacity>
           }
       </View>
-      <ChatInput />
+      <ChatInput 
+        scrollRef={scrollViewRef} 
+        message={msg}
+        setMessage={setMsg}
+      />
     </KeyboardAvoidingView>
   );
 }

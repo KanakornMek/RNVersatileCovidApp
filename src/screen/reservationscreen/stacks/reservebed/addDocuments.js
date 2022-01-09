@@ -6,27 +6,38 @@ import {
     Image,
     TouchableOpacity,
     Pressable,
+    Alert,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
+import auth from '@react-native-firebase/auth';
 import { AuthContext } from '../../../../components/navbar'
 import ImgPicker from "./components/imgpicker";
 
 
-export default function AddDocuments() {
+const uid = auth().currentUser.uid;
+
+export default function AddDocuments({ route }) {
+    const hospitalId = route.params.hospitalId;
+    const roomType = route.params.roomType;
+    console.log(roomType, hospitalId);
     const authData = useContext(AuthContext);
+    console.log(authData.requestRef);
     const [IdwithFace, setIdwithFace] = useState({});
     const [IdImg, setIdImg] = useState({});
     const [covidTest, setCovidTest] = useState({});
+
+    const [disable, setDisable] = useState(false);
     return (
         <>
             <View style={styles.container}>
                 <Image style={styles.img} source={{ uri: "https://www.vejthani.com/wp-content/uploads/2020/01/PREMIUM-WARD-GRAND-SINGLE-6.jpg" }} />
-                <ImgPicker 
-                    title='แนบรูปถ่ายบัตรประชาชนพร้อมหน้าเจ้าของ' 
-                    img={IdwithFace} 
-                    setImg={setIdwithFace} 
+                <ImgPicker
+                    title='แนบรูปถ่ายบัตรประชาชนพร้อมหน้าเจ้าของ'
+                    img={IdwithFace}
+                    setImg={setIdwithFace}
                 />
-                <ImgPicker 
+                <ImgPicker
                     title='แนบรูปถ่ายบัตรประชาชน'
                     img={IdImg}
                     setImg={setIdImg}
@@ -36,11 +47,38 @@ export default function AddDocuments() {
                     img={covidTest}
                     setImg={setCovidTest}
                 />
-               <Pressable onPress={() => {
-
-               }}>
-                    <Text>ยืนยัน</Text>   
-                </Pressable> 
+                <Pressable
+                    disabled={disable}
+                    onPress={() => {
+                        setDisable(true)
+                        if (authData.requestRef == null) {
+                            storage().ref(`reserveBed/${hospitalId}/patients/${uid}/FacewithID`).putFile(IdwithFace.path).then(() => {
+                                storage().ref(`reserveBed/${hospitalId}/patients/${uid}/IdImg`).putFile(IdImg.path).then(() => {
+                                    storage().ref(`reserveBed/${hospitalId}/patients/${uid}/covidTest`).putFile(covidTest.path).then(() => {
+                                        firestore().collection('reserveBed').doc(hospitalId).collection('requests').add({
+                                            firstname: authData.firstname,
+                                            lastname: authData.lastname,
+                                            email: authData.email,
+                                            birthDate: authData.birthDate,
+                                            phoneNumber: authData.phoneNumber,
+                                            userId: uid,
+                                            roomType: roomType
+                                        }).then((docRef) => {
+                                            firestore().collection('users').doc(uid).update({
+                                                requestRef: docRef
+                                            }).then(() => { 
+                                                setDisable(false);
+                                            })
+                                        })
+                                    })
+                                })
+                            })
+                        } else {
+                            Alert.alert('คุณได้จองไว้ที่โรงพยาบาลอื่นแล้ว')
+                        }
+                    }}>
+                    <Text>ยืนยัน</Text>
+                </Pressable>
             </View>
         </>
     );

@@ -8,9 +8,9 @@ import {
     TouchableOpacity,
     TextInput,
 } from "react-native";
-import auth from '@react-native-firebase/auth';
-const uid = auth().currentUser.uid;
-export default function ChatInput() {
+import functions from '@react-native-firebase/functions';
+
+export default function ChatInput({scrollRef, message, setMessage}) {
     const [textIn, setTextIn] = React.useState('');
     return (
       <View style={inputStyles.container}>
@@ -18,16 +18,12 @@ export default function ChatInput() {
           <TextInput value={textIn} onChangeText={(text) => setTextIn(text)} style={inputStyles.input} placeholder='fffff' />
   
           <TouchableOpacity onPress={() => {
-            axios.post('https://us-central1-nsc-covidapp.cloudfunctions.net/dialogflowGateway', {
-              userId: uid,
-              queryInput: {
-                text: {
-                  text: textIn,
-                  languageCode: "th"
-                }
-              }
-            }).then(res => { console.log(res.data) }).catch(err => { console.log(err) });
+            functions().httpsCallable('dialogflowGateway')({messageInput: textIn}).then(res => {
+              console.log(res.data)
+            })
+            setMessage([...message, {text: textIn, createdBy: 'user'}])
             setTextIn('');
+            scrollRef.current.scrollToEnd({ animated: true });
           }}>
             <Ionicons name="send" color={'#0086e8'} size={30} />
           </TouchableOpacity>

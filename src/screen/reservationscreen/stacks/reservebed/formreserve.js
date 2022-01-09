@@ -79,7 +79,7 @@ export default function Form({ route, navigation }) {
               }}
             >
               <Pressable
-                onPress={ () => {navigation.navigate('AddDocuments')}}
+                onPress={ () => {navigation.navigate('AddDocuments',{ roomType: roomType, hospitalId: hospitalId })}}
                 style={{
                   width: "85%",
                   backgroundColor: "#0291fb",

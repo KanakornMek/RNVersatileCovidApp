@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   StyleSheet,
@@ -10,6 +10,7 @@ import {
   TouchableHighlight,
   Alert,
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import firestore from "@react-native-firebase/firestore";
 import PlatformPicker from "../../components/picker";
 import Foundation from 'react-native-vector-icons/Foundation';
@@ -19,26 +20,28 @@ import * as loData from '../../utils/location.json';
 const locationData = JSON.parse(JSON.stringify(loData));
 
 export default function ReserveOpt({ navigation }) {
+  const [showNF, setShowNF] = useState(false);
+
   const [province, setProvince] = useState("");
   const [district, setDistrict] = useState("");
   const [provinceIndex, setProvinceIndex] = useState(1);
   const [districtIndex, setDistrictIndex] = useState(0);
   const [hospitals, setHospital] = useState([]);
+  const [queryProvince, setQueryProvince] = useState('');
+  const [queryDistrict, setQueryDistrict] = useState('');
+
   useEffect(() => {
-    if (province !== "" && district !== "") {
-      const subscriber = firestore().collection("reserveBed").where("province", "==", province).where("district", "==", district)
-        .onSnapshot((querySnapshot) => {
-          var result = [];
-          querySnapshot.forEach((doc) => {
-            result.push({ data: doc.data(), id: doc.id });
-          });
-          setHospital(result);
+    const subscriber = firestore().collection("reserveBed").where("province", "==", queryProvince).where("district", "==", queryDistrict)
+      .onSnapshot((querySnapshot) => {
+        var result = [];
+        querySnapshot.forEach((doc) => {
+          result.push({ data: doc.data(), id: doc.id });
         });
-      return () => subscriber();
-    } else {
-      setHospital([]);
-    }
-  },[province, district]);
+        setHospital(result);
+      })
+
+    return () => subscriber();
+  })
 
 
   return (
@@ -50,7 +53,7 @@ export default function ReserveOpt({ navigation }) {
         selected={province}
         setSelected={setProvince}
         setIndex={setProvinceIndex}
-        onChangeSelect={() => {setDistrict(""); setDistrictIndex(0);}}
+        onChangeSelect={() => { setDistrict(""); setDistrictIndex(0); }}
       />
       <Text style={styles.textStyle}>โปรดระบุเขต</Text>
       <PlatformPicker
@@ -64,7 +67,16 @@ export default function ReserveOpt({ navigation }) {
         <TouchableHighlight
           style={{ width: "95%", borderRadius: 10 }}
           activeOpacity={0.8}
-          onPress={() => Alert.alert('fff')}
+          onPress={() => {
+            if (province !== '' && district !== '') {
+              setQueryDistrict(district);
+              setQueryProvince(province);
+            } else if (province === "") {
+              Alert.alert('กรุณาใส่จังหวัด');
+            } else if (district === "") {
+              Alert.alert('กรุณาใส่เขต/อำเภอ')
+            }
+          }}
         >
           <View style={styles.searchButton}>
             <Text style={{ color: "white", fontSize: 17 }}>ค้นหา</Text>
@@ -73,17 +85,19 @@ export default function ReserveOpt({ navigation }) {
 
       </View>
       <ScrollView>
-        {hospitals.map((hospital, index) => {
-          return (
-            <Pressable onPress={() => navigation.push('chooseRoom', { dataParams: hospital })} key={index} style={styles.hospitalBox}>
-              <View style={styles.titleBox} >
-                <Foundation name="plus" size={30} color='red' />
-                <Text style={styles.titleText}>{hospital.data.hospital_name}</Text>
-              </View>
-              <Text>เตียงว่าง: <Text>{hospital.data.available}</Text>/<Text>{hospital.data.allbed}</Text></Text>
-            </Pressable>
-          );
-        })}
+        {hospitals.length === 0 ? <Text>ไม่พบโรงพยาบาลที่ให้บริการในเขตนี้</Text> :
+          hospitals.map((hospital, index) => {
+            return (
+              <Pressable onPress={() => navigation.push('chooseRoom', { dataParams: hospital })} key={index} style={styles.hospitalBox}>
+                <View style={styles.titleBox} >
+                  <Foundation name="plus" size={30} color='red' />
+                  <Text style={styles.titleText}>{hospital.data.hospital_name}</Text>
+                </View>
+                <Text>เตียงว่าง: <Text>{hospital.data.available}</Text>/<Text>{hospital.data.allbed}</Text></Text>
+              </Pressable>
+            );
+          })
+        }
       </ScrollView>
     </View>
   );
