@@ -20,6 +20,7 @@ const uid = auth().currentUser.uid;
 export default function AddDocuments({ route }) {
     const hospitalId = route.params.hospitalId;
     const roomType = route.params.roomType;
+    const roomId = route.params.roomId;
     console.log(roomType, hospitalId);
     const authData = useContext(AuthContext);
     console.log(authData.requestRef);
@@ -51,10 +52,11 @@ export default function AddDocuments({ route }) {
                     disabled={disable}
                     onPress={() => {
                         setDisable(true)
-                        if (authData.requestRef == null) {
+                        if (!authData.requestRef) {
                             storage().ref(`reserveBed/${hospitalId}/patients/${uid}/FacewithID`).putFile(IdwithFace.path).then(() => {
                                 storage().ref(`reserveBed/${hospitalId}/patients/${uid}/IdImg`).putFile(IdImg.path).then(() => {
                                     storage().ref(`reserveBed/${hospitalId}/patients/${uid}/covidTest`).putFile(covidTest.path).then(() => {
+                                        console.log('a')
                                         firestore().collection('reserveBed').doc(hospitalId).collection('requests').add({
                                             firstname: authData.firstname,
                                             lastname: authData.lastname,
@@ -62,18 +64,36 @@ export default function AddDocuments({ route }) {
                                             birthDate: authData.birthDate,
                                             phoneNumber: authData.phoneNumber,
                                             userId: uid,
-                                            roomType: roomType
+                                            roomType: roomType,
+                                            roomId: roomId
                                         }).then((docRef) => {
-                                            firestore().collection('users').doc(uid).update({
-                                                requestRef: docRef
-                                            }).then(() => { 
-                                                setDisable(false);
+                                            console.log('b')
+                                            firestore().collection('users').doc(uid).get().then((docData) => {
+                                                console.log('c')
+                                                if (docData.data().history) {
+                                                    var hist = docData.data().history;
+                                                } else {
+                                                    var hist = [];
+                                                }
+                                                firestore().collection('users').doc(uid).update({
+                                                    requestRef: docRef,
+                                                    history: [...hist,
+                                                    {
+                                                        title: 'คุณได้จองเตียงแล้ว',
+                                                        createdOn: firestore.Timestamp.now(),
+                                                        message: 'กรุณารอคำอนุมัติจากโรงพยาบาล'
+                                                    }
+                                                    ]
+                                                }).then(() => {
+                                                    setDisable(false);
+                                                })
                                             })
                                         })
                                     })
                                 })
                             })
                         } else {
+                            setDisable(false);
                             Alert.alert('คุณได้จองไว้ที่โรงพยาบาลอื่นแล้ว')
                         }
                     }}>

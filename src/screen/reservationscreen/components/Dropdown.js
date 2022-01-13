@@ -1,20 +1,20 @@
-import React, { useState }  from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { Dimensions } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-export default function Dropdown({title, date, text}){
+export default function Dropdown({ title, date, text }) {
     const [open, setOpen] = useState(false);
-    
-    return(
+
+    return (
         <View style={styles.container} >
             <View style={styles.wrapper}>
                 <Pressable onPress={() => setOpen(!open)} style={styles.dropdown} >
-                    <Text style={{fontWeight: 'bold', fontSize: 20,}}>{title}</Text>
+                    <Text style={[textStyles.text, textStyles.title]}>{title}</Text>
                     <AntDesign name={open ? 'caretup' : 'caretdown'} size={25} color={'#949494'} />
                 </Pressable>
                 {open && <View style={styles.dropdown_item}>
-                    <Text style={{fontWeight: 'bold',}} >{text}</Text>
+                    <Text style={{ fontWeight: 'bold', }} >{text}</Text>
                 </View>}
             </View>
         </View>
@@ -33,8 +33,7 @@ const styles = StyleSheet.create({
     wrapper: {
         width: '100%',
         borderRadius: 5,
-        borderWidth: 2,
-        borderColor: 'rgba(52, 52, 52, 0.4)',
+
     },
     dropdown: {
         flexDirection: 'row',
@@ -42,9 +41,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 50,
         width: '100%',
-        backgroundColor: '#bdbdbd',
+        backgroundColor: '#bfbebe',
         padding: 10,
-        
+
     },
     dropdown_item: {
         alignItems: 'flex-start',
@@ -52,5 +51,15 @@ const styles = StyleSheet.create({
         width: '100%',
         padding: 10,
     }
-  });
-  
+});
+
+
+const textStyles = StyleSheet.create({
+    text: {
+        color: '#27264A',
+    },
+    title: {
+        fontFamily: 'Prompt-Bold',
+        fontSize: 20,
+    }
+})

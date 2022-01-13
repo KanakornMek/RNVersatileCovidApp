@@ -22,6 +22,7 @@ import Reservation from '../screen/reservationscreen/mainreservation';
 import OtherFunc from '../screen/otherfunctionscreen/maino.function';
 import AccountNav from '../screen/accountscreen/components/accountNav';
 import Chatbot from '../screen/otherfunctionscreen/stacks/chatbot';
+import HomeIsoServices from '../screen/reservationscreen/stacks/reservehomeiso/homeIso';
 
 
 const Tab = createBottomTabNavigator();
@@ -163,6 +164,36 @@ export default function Navbar({ navigation }) {
                             color: 'white',
                         },
                         headerTintColor: 'white'
+                    }}
+                />
+                <Stack.Screen 
+                    name="homeIso"
+                    component={HomeIsoServices}
+                    options={{
+                        ...TransitionPresets.SlideFromRightIOS,
+                        headerStyle: {
+                            height: 60,
+                        },
+                        header: ({ navigation, route, options, back }) => {
+                            const title = getHeaderTitle(options, route.name);
+                            return (
+                                <View style={[options.headerStyle, {
+                                    borderBottomColor: '#b1b1b1',
+                                    borderBottomWidth: 2,
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                }]}>
+                                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                                        <AntDesign
+                                            name='arrowleft'
+                                            size={options.headerStyle.height * 0.6}
+                                            style={{ marginLeft: 10 }}
+                                        />
+                                    </TouchableOpacity>
+                                    <Text style={{ fontSize: 20, marginLeft: 20 }} >{title}</Text>
+                                </View>
+                            );
+                        },
                     }}
                 />
             </Stack.Navigator>

@@ -55,7 +55,7 @@ export default function Room({ route, navigation }) {
                   <TouchableHighlight
                     style={{ borderRadius: 15 }}
                     activeOpacity={0.8}
-                    onPress={() => navigation.push('ReserveForm', { hospitalId: docId, hospitalData: hosData, roomType: item.data.room_title })}
+                    onPress={() => navigation.push('ReserveForm', { hospitalId: docId, hospitalData: hosData, roomType: item.data.room_title, roomId: item.id })}
                   >
                     <View style={styles.button}>
                       <Text style={{ color: "white", fontSize: 20, margin: 5 }}>

@@ -25,6 +25,7 @@ export default function Form({ route, navigation }) {
   const hospitalId = route.params.hospitalId;
   const hospitalName = hospitalData.hospital_name || "";
   const roomType = route.params.roomType;
+  const roomId = route.params.roomId;
   const [name, setName] = useState(authData.firstname);
   const [surname, setSurname] = useState(authData.lastname);
   const [phonenumber, setPhonenumber] = useState(authData.phoneNumber);
@@ -79,7 +80,7 @@ export default function Form({ route, navigation }) {
               }}
             >
               <Pressable
-                onPress={ () => {navigation.navigate('AddDocuments',{ roomType: roomType, hospitalId: hospitalId })}}
+                onPress={ () => {navigation.navigate('AddDocuments',{ roomType: roomType, hospitalId: hospitalId, roomId: roomId })}}
                 style={{
                   width: "85%",
                   backgroundColor: "#0291fb",
