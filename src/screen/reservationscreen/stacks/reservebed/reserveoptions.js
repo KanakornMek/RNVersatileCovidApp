@@ -43,6 +43,9 @@ export default function ReserveOpt({ navigation }) {
     return () => subscriber();
   })
 
+  useEffect(() => {
+    console.log(province, provinceIndex, district, districtIndex)
+  },[province, provinceIndex, district, districtIndex])
 
   return (
     <View style={styles.container}>

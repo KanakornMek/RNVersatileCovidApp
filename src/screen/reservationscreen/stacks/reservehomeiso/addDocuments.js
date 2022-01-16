@@ -19,9 +19,6 @@ const uid = auth().currentUser.uid;
 
 export default function AddDocuments({ route }) {
     const hospitalId = route.params.hospitalId;
-    const roomType = route.params.roomType;
-    const roomId = route.params.roomId;
-    console.log(roomType, hospitalId);
     const authData = useContext(AuthContext);
     console.log(authData.requestRef);
     const [IdwithFace, setIdwithFace] = useState({});
@@ -53,19 +50,17 @@ export default function AddDocuments({ route }) {
                     onPress={() => {
                         setDisable(true)
                         if (!authData.requestRef) {
-                            storage().ref(`reserveBed/${hospitalId}/patients/${uid}/FacewithID`).putFile(IdwithFace.path).then(() => {
-                                storage().ref(`reserveBed/${hospitalId}/patients/${uid}/IdImg`).putFile(IdImg.path).then(() => {
-                                    storage().ref(`reserveBed/${hospitalId}/patients/${uid}/covidTest`).putFile(covidTest.path).then(() => {
+                            storage().ref(`homeIsolate/${hospitalId}/patients/${uid}/FacewithID`).putFile(IdwithFace.path).then(() => {
+                                storage().ref(`homeIsolate/${hospitalId}/patients/${uid}/IdImg`).putFile(IdImg.path).then(() => {
+                                    storage().ref(`homeIsolate/${hospitalId}/patients/${uid}/covidTest`).putFile(covidTest.path).then(() => {
                                         console.log('a')
-                                        firestore().collection('reserveBed').doc(hospitalId).collection('requests').add({
+                                        firestore().collection('homeIsolate').doc(hospitalId).collection('requests').add({
                                             firstname: authData.firstname,
                                             lastname: authData.lastname,
                                             email: authData.email,
                                             birthDate: authData.birthDate,
                                             phoneNumber: authData.phoneNumber,
                                             userId: uid,
-                                            roomType: roomType,
-                                            roomId: roomId
                                         }).then((docRef) => {
                                             console.log('b')
                                             firestore().collection('users').doc(uid).get().then((docData) => {
@@ -79,7 +74,7 @@ export default function AddDocuments({ route }) {
                                                     requestRef: docRef,
                                                     history: [...hist,
                                                     {
-                                                        title: 'คุณได้ลงทะเบียนจองเตียงแล้ว',
+                                                        title: 'คุณได้ลงทะเบียนบริการการกักตัวที่บ้านแล้ว',
                                                         createdOn: firestore.Timestamp.now(),
                                                         message: 'กรุณารอคำอนุมัติจากโรงพยาบาล'
                                                     }

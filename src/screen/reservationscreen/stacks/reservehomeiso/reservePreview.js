@@ -14,33 +14,14 @@ import {
 import { Shadow } from "react-native-shadow-2";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { AuthContext } from "../../../../components/navbar";
-
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
-export default function Form({ route, navigation }) {
+export default function ReservePreview({ route, navigation }) {
   const authData = useContext(AuthContext);
-  const hospitalData = route.params.hospitalData;
-  const hospitalId = route.params.hospitalId;
-  const hospitalName = hospitalData.hospital_name || "";
-  const roomType = route.params.roomType;
-  const roomId = route.params.roomId;
+  const hospitalName = route.params.hospital_name;
+  const hospitalId = route.params.hospital_id;
+  const price = route.params.price;
   const [name, setName] = useState(authData.firstname);
   const [surname, setSurname] = useState(authData.lastname);
   const [phonenumber, setPhonenumber] = useState(authData.phoneNumber);
-  
-  // function handleSubmit(){
-  //   console.log(hospitalId);
-  //   if(hospitalId){
-  //   firestore().collection('reserveBed').doc(hospitalId).collection('requests').add({
-  //     firstname: name,
-  //     lastname: surname,
-  //     phoneNumber: phonenumber,
-  //     roomType: roomType,
-  //     userId: auth().currentUser.uid,
-  //   }).then(() => {
-  //     console.log('success');
-  //   });
-  // }}
   return (
     <KeyboardAwareScrollView
       style={{ backgroundColor: "white" }}
@@ -50,7 +31,7 @@ export default function Form({ route, navigation }) {
         <Image
           style={{ width: "100%", aspectRatio: 2 / 1 }}
           source={{
-            uri: "https://www.vejthani.com/wp-content/uploads/2020/01/PREMIUM-WARD-GRAND-SINGLE-6.jpg",
+            uri: "https://www.bdms.co.th/wp-content/uploads/2019/09/Bangkok-Hospital.png",
           }}
         ></Image>
         <Shadow
@@ -60,16 +41,15 @@ export default function Form({ route, navigation }) {
           corners={["topLeft", "topRight"]}
         >
           <View style={styles.form}>
-            <Text style={styles.titleText}>โรงพลาบาล</Text>
+            <Text style={styles.titleText}>โรงพลาบาลผู้ให้บริการ</Text>
             <Text style={styles.text}>{hospitalName}</Text>
-            <Text style={styles.titleText}>ประเภทของห้อง</Text>
-            <Text style={[styles.text, { marginBottom: 10 }]}>{roomType}</Text>
+            <Text style={styles.titleText}>อัตราค่าบริการ(ไม่รวมค่ายา)</Text>
+            <Text style={styles.text} >{price}</Text>
             <Text style={styles.titleText}>ข้อมูลส่วนตัว</Text>
             <Text style={styles.text}>ชื่อ {name}</Text>
             <Text style={styles.text}>นามสกุล {surname}</Text>
             <Text style={styles.text}>เบอร์โทรศัพท์ {phonenumber}</Text>
 
-          
             <View
               style={{
                 width: "100%",
@@ -78,7 +58,7 @@ export default function Form({ route, navigation }) {
               }}
             >
               <Pressable
-                onPress={ () => {navigation.navigate('AddDocuments',{ roomType: roomType, hospitalId: hospitalId, roomId: roomId })}}
+                onPress={() => { navigation.navigate('AddressForm',{hospitalId: hospitalId}) }}
                 style={{
                   width: "85%",
                   backgroundColor: "#0291fb",
@@ -97,6 +77,7 @@ export default function Form({ route, navigation }) {
     </KeyboardAwareScrollView>
   );
 }
+
 
 function InputFormField({ label, setState, value }) {
   const [focused, setFocused] = useState(false);

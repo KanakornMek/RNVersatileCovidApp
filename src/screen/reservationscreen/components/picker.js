@@ -54,7 +54,7 @@ export default function PlatformPicker({ items, pickplacehold, setSelected, sele
                     return (
                       <TouchableOpacity key={index} onPress={() => {
                         setSelected(item.name_th);
-                        setIndex(index);
+                        setIndex(item.id-1);
                         setModalVisible(!modalVisible);
                         onChangeSelect && onChangeSelect();
                       }}>

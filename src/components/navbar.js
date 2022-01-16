@@ -23,6 +23,9 @@ import OtherFunc from '../screen/otherfunctionscreen/maino.function';
 import AccountNav from '../screen/accountscreen/components/accountNav';
 import Chatbot from '../screen/otherfunctionscreen/stacks/chatbot';
 import HomeIsoServices from '../screen/reservationscreen/stacks/reservehomeiso/homeIso';
+import ReservePreview from '../screen/reservationscreen/stacks/reservehomeiso/reservePreview';
+import AddressForm from '../screen/reservationscreen/stacks/reservehomeiso/addressForm';
+import AddDocumentsIso from '../screen/reservationscreen/stacks/reservehomeiso/addDocuments'
 
 
 const Tab = createBottomTabNavigator();
@@ -195,6 +198,70 @@ export default function Navbar({ navigation }) {
                             );
                         },
                     }}
+                />
+                <Stack.Screen
+                    name="HomeIsoPreview"
+                    component={ReservePreview}
+                    options={{
+                        ...TransitionPresets.SlideFromRightIOS,
+                        headerStyle: {
+                            height: 60,
+                        },
+                        header: ({ navigation, route, options, back }) => {
+                            const title = getHeaderTitle(options, route.name);
+                            return (
+                                <View style={[options.headerStyle, {
+                                    borderBottomColor: '#b1b1b1',
+                                    borderBottomWidth: 2,
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                }]}>
+                                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                                        <AntDesign
+                                            name='arrowleft'
+                                            size={options.headerStyle.height * 0.6}
+                                            style={{ marginLeft: 10 }}
+                                        />
+                                    </TouchableOpacity>
+                                    <Text style={{ fontSize: 20, marginLeft: 20 }} >{title}</Text>
+                                </View>
+                            );
+                        },
+                    }}
+                />
+                <Stack.Screen
+                    name='AddressForm'
+                    component={AddressForm}
+                    options={{
+                        ...TransitionPresets.SlideFromRightIOS,
+                        headerStyle: {
+                            height: 60,
+                        },
+                        header: ({ navigation, route, options, back }) => {
+                            const title = getHeaderTitle(options, route.name);
+                            return (
+                                <View style={[options.headerStyle, {
+                                    borderBottomColor: '#b1b1b1',
+                                    borderBottomWidth: 2,
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                }]}>
+                                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                                        <AntDesign
+                                            name='arrowleft'
+                                            size={options.headerStyle.height * 0.6}
+                                            style={{ marginLeft: 10 }}
+                                        />
+                                    </TouchableOpacity>
+                                    <Text style={{ fontSize: 20, marginLeft: 20 }} >{title}</Text>
+                                </View>
+                            );
+                        },
+                    }}
+                />
+                <Stack.Screen 
+                    name="addDocsHomeIso"
+                    component={AddDocumentsIso}
                 />
             </Stack.Navigator>
                 
