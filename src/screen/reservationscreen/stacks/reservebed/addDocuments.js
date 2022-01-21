@@ -65,7 +65,8 @@ export default function AddDocuments({ route }) {
                                             phoneNumber: authData.phoneNumber,
                                             userId: uid,
                                             roomType: roomType,
-                                            roomId: roomId
+                                            roomId: roomId,
+                                            createdOn: firestore.FieldValue.serverTimestamp(),
                                         }).then((docRef) => {
                                             console.log('b')
                                             firestore().collection('users').doc(uid).get().then((docData) => {

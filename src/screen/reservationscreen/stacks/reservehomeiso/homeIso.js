@@ -7,13 +7,15 @@ import {
     Pressable,
 } from "react-native";
 import SearchBar from "../../components/SearchBar";
-import algoliasearch from 'algoliasearch/lite'
+import algoliasearch from 'algoliasearch/lite';
+import auth from '@react-native-firebase/auth';
 
 export default function HomeIsoServices({navigation}) {
+    const uid = auth().currentUser.uid;
     const client = algoliasearch('UPNR7GK49B', 'fd732a6eb5982ea2a1afa980537d3fcd');
     const index = client.initIndex('homeIsolate');
     const requestOptions = {
-        headers: { 'X-Algolia-UserToken': 'user123' }
+        headers: { 'X-Algolia-UserToken': uid }
     };
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);

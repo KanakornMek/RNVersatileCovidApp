@@ -61,6 +61,7 @@ export default function AddDocuments({ route }) {
                                             birthDate: authData.birthDate,
                                             phoneNumber: authData.phoneNumber,
                                             userId: uid,
+                                            createdOn: firestore.FieldValue.serverTimestamp(),
                                         }).then((docRef) => {
                                             console.log('b')
                                             firestore().collection('users').doc(uid).get().then((docData) => {

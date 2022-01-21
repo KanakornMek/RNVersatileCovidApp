@@ -33,7 +33,6 @@ export default function PreviewImg({ show, setShow, img }) {
                 <ReactNativeZoomableView
                     maxZoom={3}
                     minZoom={1}
-                    
                     initialZoom={1}
                     bindToBorders={true}
                     captureEvent={true}

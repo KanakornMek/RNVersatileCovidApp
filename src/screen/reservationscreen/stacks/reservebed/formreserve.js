@@ -15,8 +15,6 @@ import { Shadow } from "react-native-shadow-2";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { AuthContext } from "../../../../components/navbar";
 
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 export default function Form({ route, navigation }) {
   const authData = useContext(AuthContext);
   const hospitalData = route.params.hospitalData;

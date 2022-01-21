@@ -10,7 +10,6 @@ import {
   TouchableHighlight,
   Alert,
 } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
 import firestore from "@react-native-firebase/firestore";
 import PlatformPicker from "../../components/picker";
 import Foundation from 'react-native-vector-icons/Foundation';
@@ -20,8 +19,6 @@ import * as loData from '../../utils/location.json';
 const locationData = JSON.parse(JSON.stringify(loData));
 
 export default function ReserveOpt({ navigation }) {
-  const [showNF, setShowNF] = useState(false);
-
   const [province, setProvince] = useState("");
   const [district, setDistrict] = useState("");
   const [provinceIndex, setProvinceIndex] = useState(1);
@@ -31,21 +28,21 @@ export default function ReserveOpt({ navigation }) {
   const [queryDistrict, setQueryDistrict] = useState('');
 
   useEffect(() => {
-    const subscriber = firestore().collection("reserveBed").where("province", "==", queryProvince).where("district", "==", queryDistrict)
+    const subscriber = firestore().collection("reserveBed")
+      .where("province", "==", queryProvince)
+      .where("district", "==", queryDistrict)
       .onSnapshot((querySnapshot) => {
-        var result = [];
-        querySnapshot.forEach((doc) => {
-          result.push({ data: doc.data(), id: doc.id });
-        });
-        setHospital(result);
-      })
-
+        if (querySnapshot) {
+          console.log(querySnapshot);
+          var result = [];
+          querySnapshot.forEach((doc) => {
+            result.push({ data: doc.data(), id: doc.id });
+          });
+          setHospital(result);
+        }
+      });
     return () => subscriber();
-  })
-
-  useEffect(() => {
-    console.log(province, provinceIndex, district, districtIndex)
-  },[province, provinceIndex, district, districtIndex])
+  });
 
   return (
     <View style={styles.container}>
@@ -93,7 +90,11 @@ export default function ReserveOpt({ navigation }) {
             return (
               <Pressable onPress={() => navigation.push('chooseRoom', { dataParams: hospital })} key={index} style={styles.hospitalBox}>
                 <View style={styles.titleBox} >
-                  <Foundation name="plus" size={30} color='red' />
+                  <Image source={{uri: hospital.data.hospitalImg}}  
+                    style={{
+                      width: 100,
+                      height: 100,
+                    }}/>
                   <Text style={styles.titleText}>{hospital.data.hospital_name}</Text>
                 </View>
                 <Text>เตียงว่าง: <Text>{hospital.data.available}</Text>/<Text>{hospital.data.allbed}</Text></Text>

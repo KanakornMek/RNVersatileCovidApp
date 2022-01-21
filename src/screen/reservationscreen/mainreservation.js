@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Pressable,
   StyleSheet,
@@ -9,10 +9,12 @@ import {
   ActivityIndicator,
   Button,
   ScrollView,
+  Alert,
 } from "react-native";
 import Dropdown from "./components/Dropdown.js";
 import firestore from '@react-native-firebase/firestore';
 import auth from "@react-native-firebase/auth";
+import { AuthContext } from "../../components/navbar.js";
 const uid = auth().currentUser.uid;
 
 export default function MainReserve({ navigation }) {
@@ -20,14 +22,33 @@ export default function MainReserve({ navigation }) {
   const [appoints, setAppoint] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hist, setHist] = useState([]);
+  const authData = useContext(AuthContext);
   useEffect(() => {
-    const subscriber = firestore().collection('users')
-      .doc(uid).onSnapshot(documentSnapshot => {
-        console.log('User data: ', documentSnapshot.data());
-        setHist(documentSnapshot.data().history);
-      });
-
-    return () => subscriber();
+    if(authData.firstname){
+      const subscriber = firestore().collection('users')
+        .doc(uid).onSnapshot(documentSnapshot => {
+          console.log('User data: ', documentSnapshot.data());
+          setHist(documentSnapshot.data().history);
+        });
+      return () => subscriber();
+    } else{
+      Alert.alert(
+        'กรุณาใส่ข้อมูลส่วนตัว',
+        '',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              navigation.navigate('EditProfile')
+            }
+          },
+          {
+            text: 'ยกเลิก',
+            style: 'cancel'
+          }
+        ]
+      )
+    }
   }, []);
 
   return (
@@ -53,7 +74,7 @@ export default function MainReserve({ navigation }) {
             onLoad={() => setLoading(false)}
           />
         </Pressable>
-        <Pressable 
+        <Pressable
           style={styles.homeIsolate}
           onPress={() => navigation.push('homeIso')}
         >
@@ -76,12 +97,12 @@ export default function MainReserve({ navigation }) {
             })} */}
       <ScrollView>
 
-      {hist.map((his, index) => {
-        return (
-          <Dropdown key={index} title={his.title} text={his.message} />
+        {hist.map((his, index) => {
+          return (
+            <Dropdown key={index} title={his.title} text={his.message} />
           );
         })}
-        </ScrollView>
+      </ScrollView>
 
     </View>
   );
