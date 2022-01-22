@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Modal, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -28,21 +28,27 @@ import AddressForm from '../screen/reservationscreen/stacks/reservehomeiso/addre
 import AddDocumentsIso from '../screen/reservationscreen/stacks/reservehomeiso/addDocuments'
 import Account from '../screen/accountscreen/account';
 import EditProfile from '../screen/accountscreen/stacks/editProfile';
+import Info from '../screen/otherfunctionscreen/stacks/info';
+import ViewInfo from '../screen/otherfunctionscreen/stacks/components/viewInfo';
 
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 export const AuthContext = React.createContext();
-export default function Navbar({ navigation }) {
-    const [authInfo, setAuthInfo] = React.useState({});
 
+export default function Navbar({ navigation }) {
+
+    const [authInfo, setAuthInfo] = React.useState({});
     useEffect(() => {
-        const subscriber = firestore().collection('users').doc(auth().currentUser.uid).onSnapshot(doc => {
-            setAuthInfo(doc.data());
-        });
-        return () => subscriber();
+        if(auth().currentUser){
+            const subscriber = firestore().collection('users').doc(auth().currentUser.uid).onSnapshot(doc => {
+                setAuthInfo(doc.data());
+            });
+            return () => subscriber();
+        }
     }, []);
     return (
+       
         <AuthContext.Provider value={authInfo}>
             {!auth().currentUser && navigation.navigate('Auth')}
             <Stack.Navigator
@@ -156,7 +162,7 @@ export default function Navbar({ navigation }) {
                     component={AddDocuments}
 
                 />
-                <Stack.Screen 
+                <Stack.Screen
 
                     name="Chatbot"
                     component={Chatbot}
@@ -171,7 +177,7 @@ export default function Navbar({ navigation }) {
                         headerTintColor: 'white'
                     }}
                 />
-                <Stack.Screen 
+                <Stack.Screen
                     name="homeIso"
                     component={HomeIsoServices}
                     options={{
@@ -261,7 +267,7 @@ export default function Navbar({ navigation }) {
                         },
                     }}
                 />
-                <Stack.Screen 
+                <Stack.Screen
                     name="addDocsHomeIso"
                     component={AddDocumentsIso}
                 />
@@ -269,8 +275,16 @@ export default function Navbar({ navigation }) {
                     name='EditProfile'
                     component={EditProfile}
                 />
+                <Stack.Screen
+                    name='information'
+                    component={Info}
+                />
+                <Stack.Screen
+                    name='ViewInfo'
+                    component={ViewInfo}
+                />
             </Stack.Navigator>
-                
+
         </AuthContext.Provider>
     );
 }

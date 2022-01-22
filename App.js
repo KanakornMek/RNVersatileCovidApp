@@ -1,42 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import {StyleSheet, Text, View, Modal} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import { StyleSheet, Text, View, Modal } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import Navbar from './src/components/navbar';
-import auth from '@react-native-firebase/auth';
-import 'react-native-gesture-handler';
-import {createStackNavigator} from '@react-navigation/stack';
-import AuthNav from './src/screen/authscreen/components/authNav';
 
+import 'react-native-gesture-handler';
+import { createStackNavigator } from '@react-navigation/stack';
+import AuthNav from './src/screen/authscreen/components/authNav';
+import auth from '@react-native-firebase/auth'
 const AuthStack = createStackNavigator();
+export const Loggedin = React.createContext();
 
 export default function App() {
   const [authLoading, setAuthLoading] = useState(true);
   const [logIn, setLogIn] = useState(false);
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged((user) => {
-      if(user) {
+      if (user) {
         setLogIn(true);
-        setAuthLoading(false)
         console.log('user is logged in');
       }
+      setAuthLoading(false)
     })
     return () => subscriber;
-  })
+  }, [])
   return (
     <>
       {!authLoading &&
-        <NavigationContainer>
+        <Loggedin.Provider value={logIn}>
+          <NavigationContainer>
 
-          <AuthStack.Navigator
-            initialRouteName={logIn ? 'Navbar' : 'Auth'}
-          >
-            <AuthStack.Screen name="Auth" component={AuthNav} options={{ headerShown: false }} />
-            <AuthStack.Screen name="Navbar" component={Navbar} options={{ headerShown: false }} />
-          </AuthStack.Navigator>
+            <AuthStack.Navigator>
+              {!logIn ? <AuthStack.Screen name="Auth" component={AuthNav} options={{ headerShown: false }} /> :
+                <AuthStack.Screen name="Navbar" component={Navbar} options={{ headerShown: false }} />
 
-        </NavigationContainer>
-}
+              }
+            </AuthStack.Navigator>
+
+          </NavigationContainer>
+        </Loggedin.Provider>
+      }
     </>
+
   );
 }
 

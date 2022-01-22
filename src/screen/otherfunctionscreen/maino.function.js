@@ -48,7 +48,10 @@ export default function OtherFunc({navigation}) {
             </Text>
           </View>
         </View>
-        <Pressable style={styles.imageContainer}>
+        <Pressable
+          onPress={() => navigation.navigate('information')}
+          style={styles.imageContainer}
+        >
           <Image
             resizeMode="contain"
             style={{width: '100%'}}

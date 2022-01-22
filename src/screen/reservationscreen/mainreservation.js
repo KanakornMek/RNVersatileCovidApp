@@ -15,7 +15,6 @@ import Dropdown from "./components/Dropdown.js";
 import firestore from '@react-native-firebase/firestore';
 import auth from "@react-native-firebase/auth";
 import { AuthContext } from "../../components/navbar.js";
-const uid = auth().currentUser.uid;
 
 export default function MainReserve({ navigation }) {
   const [data, setData] = useState({});
@@ -26,7 +25,7 @@ export default function MainReserve({ navigation }) {
   useEffect(() => {
     if(authData.firstname){
       const subscriber = firestore().collection('users')
-        .doc(uid).onSnapshot(documentSnapshot => {
+        .doc(auth().currentUser.uid).onSnapshot(documentSnapshot => {
           console.log('User data: ', documentSnapshot.data());
           setHist(documentSnapshot.data().history);
         });

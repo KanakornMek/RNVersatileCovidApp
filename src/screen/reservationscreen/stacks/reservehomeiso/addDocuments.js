@@ -15,9 +15,9 @@ import { AuthContext } from '../../../../components/navbar'
 import ImgPicker from "./components/imgpicker";
 
 
-const uid = auth().currentUser.uid;
 
 export default function AddDocuments({ route }) {
+    const uid = auth().currentUser ? auth().currentUser.uid : '';
     const hospitalId = route.params.hospitalId;
     const authData = useContext(AuthContext);
     console.log(authData.requestRef);

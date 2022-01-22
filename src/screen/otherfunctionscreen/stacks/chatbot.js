@@ -18,10 +18,10 @@ import Message from './components/message';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
-const uid = auth().currentUser.uid;
 
 export default function Chatbot() {
   var visited = false;
+  const uid = auth().currentUser ? auth().currentUser.uid : '';
   const [msg, setMsg] = React.useState([]);
   React.useEffect(() => {
     const unsubscribe = firestore()
@@ -44,20 +44,20 @@ export default function Chatbot() {
   const [scrollButton, setScrollButton] = React.useState(false);
 
   React.useEffect(() => {
-    if(closeToBottom) {
+    if (closeToBottom) {
       scrollViewRef.current.scrollToEnd({ animated: true });
     }
-    else if(!visited) {
+    else if (!visited) {
       scrollViewRef.current.scrollToEnd({ animated: false });
       visited = true;
     }
-    else{
-      
+    else {
+
       setScrollButton(true);
     }
   }, [msg]);
 
-  const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+  const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
     const paddingToBottom = 20;
     return layoutMeasurement.height + contentOffset.y >=
       contentSize.height - paddingToBottom;
@@ -84,19 +84,19 @@ export default function Chatbot() {
             );
           })}
         </ScrollView>
-        {scrollButton && 
-            <TouchableOpacity onPress={() => {
-              scrollViewRef.current.scrollToEnd({animated: true})
-              setScrollButton(false)
-            }}>
-              <View style={styles.scrollButton}>
-                <Text style={{color: 'white'}}>แสดงข้อความใหม่</Text>
-              </View>
-            </TouchableOpacity>
-          }
+        {scrollButton &&
+          <TouchableOpacity onPress={() => {
+            scrollViewRef.current.scrollToEnd({ animated: true })
+            setScrollButton(false)
+          }}>
+            <View style={styles.scrollButton}>
+              <Text style={{ color: 'white' }}>แสดงข้อความใหม่</Text>
+            </View>
+          </TouchableOpacity>
+        }
       </View>
-      <ChatInput 
-        scrollRef={scrollViewRef} 
+      <ChatInput
+        scrollRef={scrollViewRef}
         message={msg}
         setMessage={setMsg}
       />
