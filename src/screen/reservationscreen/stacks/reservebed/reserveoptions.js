@@ -42,7 +42,7 @@ export default function ReserveOpt({ navigation }) {
         }
       });
     return () => subscriber();
-  }, []);
+  }, [queryProvince, queryDistrict]);
 
   return (
     <View style={styles.container}>
