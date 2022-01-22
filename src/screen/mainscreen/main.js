@@ -43,7 +43,7 @@ function Home() {
         api.get('/').then(res => {
             setTodayCase(res.data);
         })
-    })
+    },[]);
     return (
         <ScrollView style={styles.scrollView}>
             <ModalPoup visible={isVisible}>
