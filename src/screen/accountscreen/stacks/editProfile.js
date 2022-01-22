@@ -24,23 +24,31 @@ const months = ['-', 'มกราคม', 'กุมภาพันธ์', '�
 export default function EditProfile({ navigation }) {
     const authData = useContext(AuthContext);
 
-    const [image, setImage] = useState({ path: authData.profilePic });
     const [imagechanged, setImagechanged] = useState(false);
     const [firstname, setFirstname] = useState(authData.firstname);
     const [lastname, setLastname] = useState(authData.lastname);
-    const [birthMonth, setBirthMonth] = useState(timestampToDate( authData.birthDate).month);
-    const [birthday, setBirthday] = useState(timestampToDate( authData.birthDate).day);
+    const [birthMonth, setBirthMonth] = useState(timestampToDate(authData.birthDate).month);
+    const [birthday, setBirthday] = useState(timestampToDate(authData.birthDate).day);
     const [birthYear, setBirthYear] = useState(timestampToDate(authData.birthDate).year.toString());
     const [phone, setPhone] = useState(authData.phoneNumber);
     const [gender, setGender] = useState(authData.gender === 'male' ? 1 : 2);
+    const [profileURL, setProfileURL] = useState('');
     const uid = auth().currentUser.uid;
 
-    useEffect(() =>{
+    useEffect(() => {
         console.log(timestampToDate(authData.birthDate))
-    },[birthMonth,birthday,birthYear]);
+    }, [birthMonth, birthday, birthYear]);
+
+    useEffect(() => {
+        storage().ref(`userData/${uid}/profilePic`).getDownloadURL()
+            .then((url) => {
+                setProfileURL(url);
+        })
+
+    }, [uid])
 
     function uploadtoStorage(birthDate) {
-        storage().ref(`userData/${uid}/profilePic`).putFile(image.path).then(() => {
+        storage().ref(`userData/${uid}/profilePic`).putFile(profileURL).then(() => {
             updateInfo(birthDate);
         })
     }
@@ -53,9 +61,7 @@ export default function EditProfile({ navigation }) {
     }
     async function updateInfo(birthDate) {
 
-        const url = await storage().ref(`userData/${uid}/profilePic`).getDownloadURL();
         firestore().collection('users').doc(uid).update({
-            profilePic: url,
             firstname: firstname,
             lastname: lastname,
             gender: gender === 1 ? 'male' : 'female',
@@ -79,10 +85,10 @@ export default function EditProfile({ navigation }) {
                         cropperCircleOverlay: true,
                     }).then(img => {
                         setImagechanged(true);
-                        setImage(img);
+                        setProfileURL(img.path);
                     })
                 }}>
-                    <Image style={styles.avatar} source={{ uri: (image.path || '') }} />
+                    <Image style={styles.avatar} source={{ uri: (profileURL || '') }} />
                 </TouchableOpacity>
             </View>
             <View style={styles.wrapper}>
@@ -127,7 +133,7 @@ export default function EditProfile({ navigation }) {
             <Button title='Press' onPress={() => {
                 const birthDate = getDate(birthday, birthMonth, birthYear);
                 { imagechanged ? uploadtoStorage(birthDate) : updateInfo(birthDate) }
-                
+
             }} />
         </View>
     );

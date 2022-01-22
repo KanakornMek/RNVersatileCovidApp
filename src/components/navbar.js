@@ -26,6 +26,8 @@ import HomeIsoServices from '../screen/reservationscreen/stacks/reservehomeiso/h
 import ReservePreview from '../screen/reservationscreen/stacks/reservehomeiso/reservePreview';
 import AddressForm from '../screen/reservationscreen/stacks/reservehomeiso/addressForm';
 import AddDocumentsIso from '../screen/reservationscreen/stacks/reservehomeiso/addDocuments'
+import Account from '../screen/accountscreen/account';
+import EditProfile from '../screen/accountscreen/stacks/editProfile';
 
 
 const Tab = createBottomTabNavigator();
@@ -263,6 +265,10 @@ export default function Navbar({ navigation }) {
                     name="addDocsHomeIso"
                     component={AddDocumentsIso}
                 />
+                <Stack.Screen
+                    name='EditProfile'
+                    component={EditProfile}
+                />
             </Stack.Navigator>
                 
         </AuthContext.Provider>
@@ -306,7 +312,7 @@ function TabNavComponent() {
             <Tab.Screen name='Home' component={Home} />
             <Tab.Screen name='Reservation' component={Reservation} />
             <Tab.Screen name='Chatbot' component={OtherFunc} />
-            <Tab.Screen name='Account' options={{ headerStyle: { height: 33, backgroundColor: '#15ABFF' } }} component={AccountNav} />
+            <Tab.Screen name='Account' options={{ headerStyle: { height: 33, backgroundColor: '#15ABFF' } }} component={Account} />
         </Tab.Navigator>
     );
 }
