@@ -42,7 +42,7 @@ export default function ReserveOpt({ navigation }) {
         }
       });
     return () => subscriber();
-  });
+  }, []);
 
   return (
     <View style={styles.container}>
